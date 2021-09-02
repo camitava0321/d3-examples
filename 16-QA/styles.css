@@ -1,0 +1,85 @@
+text {
+  font:1em "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-anchor: start;
+  pointer-events: none;
+}
+
+.node circle {
+  cursor: pointer;
+  stroke: #3182bd;
+  stroke-width: 1.5px;
+}
+
+.node rect {
+  cursor: pointer;
+  stroke: #3182bd;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font: 1em sans-serif;
+  pointer-events: none;
+  text-anchor: start;
+}
+
+line.link {
+  fill: none;
+  stroke: #9ecae1;
+  stroke-width: 1.5px;
+}
+/* style for popups */
+.ontop {
+	z-index: 990;
+	width: 400px;
+	height: 500px;
+	/*top: 20;
+	left: 850;*/
+	display: none;
+	position: absolute;
+	color: #333333;
+	font-family: "Verdana", sans-serif;
+	font-size: 12px;
+	overflow: auto;
+	float:right;
+}
+#popup {
+	width: 380px;
+	height: 200px;
+	/*position: absolute;*/
+	color: #333333;
+	background-color: #ccccff;
+	/* To align popup window at the center of screen*/
+	border-radius: 15px;
+	font-family: "Verdana", sans-serif;
+	font-size: 12px;
+	/*float:right;*/
+}
+#application {
+	z-index: 998;
+	width: 1600px;
+	height: 1000px;
+	position:absolute;
+	border:1px solid #ccc;
+	padding:5px;
+	color:#fff;
+}
+.panel {
+	width:300px;
+	float:left;
+	height:550px;
+	background:#d9dada;
+	position:relative;
+	left:-300px;
+}
+.slider-arrow {
+	z-index: 999;
+	padding:5px;
+	width:10px;
+	float:left;
+	background:#d9dada;
+	font:400 12px Arial, Helvetica, sans-serif;
+	color:#000;
+	text-decoration:none;
+	position:relative;
+	left:-300px;
+}

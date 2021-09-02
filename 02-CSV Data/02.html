@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.chart div {
+  font: 10px sans-serif;
+  background-color: steelblue;
+  text-align: right;
+  padding: 3px;
+  margin: 1px;
+  color: white;
+}
+
+
+
+.chart rect {
+  fill: steelblue;
+}
+
+.chart text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: end;
+}
+
+
+</style>
+<h2>CSV with D3</h2>
+<div class="chart"></div>
+<script src="../d3.js"></script>
+<script src="data.js"></script>
+<script>
+//Global variables 
+//Load a CSV document
+d3.csv("data.csv", function(data){
+	//This is the way to get the header row
+	var headerRow=Object.keys(data[0]);
+	console.log(headerRow);
+	//But this one prints the first line - not the header row
+	console.log(data[0]);
+	
+	//Manipulating Data Row-by-Row
+	//the map function will iterate through each element of the data. 
+	data.map(function(d) { 
+		//The data looks like
+		//console.log(d);
+		//console.log(d.Type);
+		//From within the map function, access elements of the data using the keys:
+		if (d.Type=="Hub") {
+			console.log( d );
+		}
+		console.log(+d.Type, +d.Probability)
+	});
+
+	//Manipulating Multidimensional Data
+	//the data can be reduced to two interesting dimensions: Type of node and sum of probabilities
+
+});
+</script>

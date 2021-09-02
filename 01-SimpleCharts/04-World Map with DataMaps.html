@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<meta author="Amitava Chakraborty"/>
+<link rel="stylesheet" type="text/css" href="styles.css"/>
+<script src="../d3.js"></script>
+<script src="../topojson.v1.js"></script>
+<script src="../datamaps.world.hires.min.js"></script>
+
+<style>
+</style>
+</head>
+<body>
+<h1>World Map by DataMaps</h1>
+<div id="container" style="position: relative; width: 800px; height: 800px;"></div>
+<script>
+    var map = new Datamap({
+		element: document.getElementById('container'),
+		responsive: true,
+		projection: 'mercator',
+		fills: {defaultFill: 'rgba(200,200,200,0.9)',
+			HIGH: '#22FF22', 
+			MEDIUM: '#FFFF22',
+			LOW: "#FF2222",
+			UNKNOWN: '#444444'
+			},
+		data: {
+			IND: {
+				fillKey: 'HIGH',
+				numberOfThings: 2002},
+			PAK: {
+				fillKey: 'UNKNOWN',
+				numberOfThings: 2002},
+			BRA: {
+				fillKey: 'LOW',
+				numberOfThings: 2002},
+			USA: {
+				fillKey: 'MEDIUM',
+				numberOfThings: 12002},
+			},
+
+		geographyConfig: {
+			highlightFillColor: '#AAAAFF',
+			highlightBorderColor: 'rgba(200, 200, 255, 0.2)',
+            popupTemplate: function(geo, data) {
+                return ['<div class="hoverinfo"><strong>',
+                        'Number of things in ' + geo.properties.name,
+                        ': ' + data.numberOfThings,
+                        '</strong></div>'].join('');
+				}
+				}
+		});
+		
+map.options.data.IND.numberOfThings=12302;		
+//Draw a Legend for this map
+map.legend();
+console.log(map.options.data.IND.numberOfThings);
+
+    // Pure JavaScript
+    window.addEventListener('resize', function() {
+        map.resize();
+    });
+	
+</script>
+</body>
+</html>

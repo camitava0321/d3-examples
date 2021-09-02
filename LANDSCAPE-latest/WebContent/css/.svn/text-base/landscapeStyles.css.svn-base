@@ -1,0 +1,127 @@
+/* style for nodes */
+.node {
+  stroke: #fff;
+  stroke-width: 1px;
+  fill: white;
+  opacity: .8;
+}
+.node:hover {
+	opacity: 1;
+}
+.node text {
+  font: 9px sans-serif;
+  /*stroke: #222222;*/
+  stroke: black;
+}
+.node rect { fill:white; opacity:0.8}
+.labeltext { fill:black;font-weight:bold;text-anchor:middle;font-size:16;font-family:  serif}
+/* style for links */
+.link {
+  /*stroke: #999;*/
+  stroke: black;
+  stroke-width: 1.8;
+  stroke-opacity: .1;
+  fill: none;
+}
+
+/* style for divs */
+div.ibm {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 100px;
+}
+div.maersk {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 70px;
+}
+div.status {
+    position: fixed;
+	top: 1600;
+	left: 400;
+    bottom: 0;
+    right: 0;
+    width: 100px;
+}
+
+/* style for arrow-heads */
+marker#suit {
+    fill: green;
+}
+path.link.suit {
+    stroke: green;
+}
+path.link.resolved {
+    stroke-dasharray: 0, 2 1;
+}
+
+/* style for popups */
+.ontop {
+	z-index: 990;
+	width: 400px;
+	height: 500px;
+	/*top: 20;
+	left: 850;*/
+	display: none;
+	position: absolute;
+	color: #333333;
+	font-family: "Verdana", sans-serif;
+	font-size: 12px;
+	overflow: auto;
+	float:right;
+}
+#popup {
+	width: 380px;
+	height: 200px;
+	/*position: absolute;*/
+	color: #333333;
+	background-color: #ccccff;
+	/* To align popup window at the center of screen*/
+	border-radius: 15px;
+	font-family: "Verdana", sans-serif;
+	font-size: 12px;
+	/*float:right;*/
+}
+.appTitle {
+	color: #2222AA;
+	font-family: "Verdana", sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+}
+.appDesc {
+	color: #3333CC;
+	font-family: "Verdana", sans-serif;
+	font-size: 9px;
+}
+.appTable {
+    border-collapse: collapse;
+    border: 1px solid black;
+	font-family: "Verdana", sans-serif;
+	font-size: 10px;
+}
+table.appTable td {
+    border-collapse: collapse;
+    border: 1px solid black;
+	font-family: "Verdana", sans-serif;
+	font-size: 10px;
+}
+#preview {
+	z-index: 998;
+	position:absolute;
+	border:1px solid #ccc;
+	background:#333;
+	padding:5px;
+	display:none;
+	color:#fff;
+}
+#application {
+	z-index: 998;
+	width: 1600px;
+	height: 1000px;
+	position:absolute;
+	border:1px solid #ccc;
+	padding:5px;
+	color:#fff;
+}

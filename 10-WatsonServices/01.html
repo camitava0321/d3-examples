@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Hierarchy</title>
+  <meta charset="utf-8" />
+<link rel="stylesheet" type="text/css" href="app.css">
+<script src="../d3.min.js"></script>
+</head>
+<body>
+<script>
+
+var width = window.innerWidth || document.documentElement.clientWidth|| document.body.clientWidth;
+var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+//Force Parameters
+var gravity=0.3,
+	charge=-1000,
+	//linkDistance=100,
+	friction=0.4,
+	radius=100;
+//Arrowhead width & height
+var arrowHeadWidth=4;
+var arrowHeadHeight=4;
+
+var node, link;
+
+//Setting the scale for the radius of the circles	  
+var radiusScale=d3.scale.linear()
+				.domain([0,20])    //map this domain
+				.range([20,60]);   //to this range
+
+//Setting the scale for the initial positions of the circles	  
+var fixedXPosScale=d3.scale.linear()
+				.domain([1,6])    //map this domain
+				.range([0,width]);   //to this range
+
+//Setting the scale for the initial positions of the circles	  
+var fixedYPosScale=d3.scale.linear()
+				.domain([0,50])    //map this domain
+				.range([0,height]);   //to this range
+
+//var color = d3.scale.category20();
+var colors = []; 
+
+var radius = d3.scale.sqrt()
+    .range([0, 6]);
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+//Setup the Force Layout  
+var force = d3.layout.force()
+	.gravity(gravity)
+    .charge(charge)
+    .linkDistance(linkDistance)
+	.friction(friction)
+    .size([width, height]);
+
+var drag = force.drag()
+    .on("dragstart", dragstart);
+
+var nodes = [], links = [];
+var toggle = 0;
+//Create an array logging what is connected to what
+var linkedByIndex = {};
+
+// Define the div for the tooltip
+var divNodeTip = d3.select("body").append("div")	
+    .attr("class", "tooltip")				
+    .style("opacity", 0);
+
+
+//Read NodeTypes
+d3.csv('types.csv', function(data) {
+    for (var k = 0, n = data.length; k < n; k += 1) {
+        colors.push({type: data[k].typeName, color: data[k].color, id: parseInt(data[k].id), cluster: parseInt(data[k].cluster)});
+    };
+});
+
+//Read Nodes
+d3.csv('nodes.csv', function(data) {
+
+
+    for (var k = 0, n = data.length; k < n; k += 1) {
+        nodes.push({name: data[k].name, type: data[k].type, id: parseInt(data[k].id), desc: data[k].description});
+    };
+});
+
+	
+
+	
+//Read Relationships	
+d3.csv('edges.csv', function (data) {
+		for (var k = 0, n = data.length; k < n; k += 1) {
+			links.push({source: parseInt(data[k].sourceid), target: parseInt(data[k].relationid), bond: 1, reltype: data[k].reltype});       
+		};
+
+for (var k = 0, n = nodes.length; k < n; k += 1) {
+    var type = getByValue(colors, nodes[k].type);
+	nodes[k].x = fixedXPosScale(type.cluster);
+	nodes[k].y = fixedYPosScale(50*Math.random());
+	console.log(nodes[k].type, nodes[k].x, nodes[k].y);
+};
+
+force
+      .nodes(nodes)
+      .links(links)
+      .on("tick", tick)
+      .start();
+
+
+// build the arrow.
+svg.append("svg:defs").selectAll("marker")
+    .data(["end"])      // Different link/path types can be defined here
+  .enter().append("svg:marker")    // This section adds in the arrows
+    .attr("id", String)
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 55)
+    .attr("refY", 0)
+    .attr("markerWidth", arrowHeadWidth)
+    .attr("markerHeight", arrowHeadHeight)
+    .attr("orient", "auto")
+  .append("svg:path")
+    .attr("d", "M0,-5 L10,0 L0,5 L3,0 L0,-5")
+	.style("fill","#999999");
+	
+
+link = svg.append("svg:g").selectAll(".link")
+      .data(links)
+    .enter().append("g")
+      .attr("class", "link")
+	  .attr("marker-end", "url(#end)");
+
+link.append("line")
+      .style("stroke-width", function(d) { return (d.bond * 2 - 1) * 2 + "px"; });
+
+//Add tooltip text to each link
+link.append("title")
+	  .text(function(d) { return (d.reltype); });
+  
+/*	  
+This is a quick hack to draw two parallel links between nodes. Yes, you can scale it to more than two nodes, but it gets increasingly awkward. The alternative is to compute the paths manually, say by computing the perpendicular vector of the vector between the node centers, and offsetting the links accordingly.	  
+*/	  
+  link.filter(function(d) { return d.bond > 1; }).append("line")
+      .attr("class", "separator");
+
+node = svg.selectAll(".node")
+      .data(nodes)
+    .enter().append("g")
+      .attr("class", "node")
+      .call(drag);
+
+
+  node.append("circle")
+      .attr("r", function(d){d.radius=radiusScale(d.weight); return d.radius;})
+//      .style("fill", function(d) { return color(d.portfolio); })
+      .style("fill", function(d) {
+	  
+			var colorObject = getByValue(colors, d.type);
+			/*
+			var colorObject = colors.filter(function( obj ) {
+				var objectType = obj.type;
+				console.log(objectType===d.type);
+				//return objectType.equals(d.type);
+				return true;
+				});*/
+
+			return colorObject.color; })
+  	  //.on('click', function(d){displayApplicationProfile('applicationProfile',d);}) //AMC:For click-to-fade
+  	  .on('dblclick', unfixNode) //AMC:For doubleclick-to-fade
+  	  .on('click', connectedNodes) //AMC:For doubleclick-to-fade
+  	  //.on('click', rootPath) //AMC:For doubleclick-to-fade
+	  .on("mouseover", function(d) {		
+            divNodeTip.transition()		
+                .duration(200)		
+                .style("opacity", .9);		
+            divNodeTip	.html("<span id='h1'>"+d.desc+"</span><br/><span id='h2'>"+d.type+"</span><br/>XY: "+"("+d.x.toFixed(1)+","+d.y.toFixed(1)+")")	
+                .style("left", (d3.event.pageX+5) + "px")		
+                .style("top", (d3.event.pageY - 40) + "px");	
+            })					
+        .on("mouseout", function(d) {		
+            divNodeTip.transition()		
+                .duration(500)		
+                .style("opacity", 0);	
+        })
+      //.style("fill", function(d) { return color(d.type); })
+	  ;
+
+  node.append("text")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "middle")
+      .text(function(d) { return d.name; });
+
+
+	//Add tooltip text to each node
+	node.append("title")
+		.style("fill", "#ffdddd")
+		  .text(function(d,event) { return "id: "+d.id+" | weight: "+d.weight; });
+
+	  
+
+
+	
+
+  function tick() {
+    link.selectAll("line")
+        .attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+
+	node.each(collide(.5)); //Added so that the nodes stayed apart from each other
+    node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+	};
+
+for (i = 0; i < nodes.length; i++) {
+    linkedByIndex[i + "," + i] = 1;
+};
+links.forEach(function (d) {
+	var namedIndex=d.source.id + "," + d.target.id;
+    linkedByIndex[namedIndex] = 1;
+});
+	
+  });
+
+//Code piece to keep the application nodes separate from each-other	
+var padding =15; // separation between circles
+
+function collide(alpha) {
+  var quadtree = d3.geom.quadtree(nodes);
+  return function(d) {
+    var rb = 2*d.radius + padding,
+        nx1 = d.x - rb,
+        nx2 = d.x + rb,
+        ny1 = d.y - rb,
+        ny2 = d.y + rb;
+    quadtree.visit(function(quad, x1, y1, x2, y2) {
+      if (quad.point && (quad.point !== d)) {
+        var x = d.x - quad.point.x,
+            y = d.y - quad.point.y,
+            l = Math.sqrt(x * x + y * y);
+          if (l < rb) {
+          l = (l - rb) / l * alpha;
+          d.x -= x *= l;
+          d.y -= y *= l;
+          quad.point.x += x;
+          quad.point.y += y;
+        }
+      }
+      return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+    });
+  };
+}
+
+//This function looks up whether a pair are neighbours
+function neighboring(a, b) {
+    return linkedByIndex[a.id + "," + b.id];
+}
+function connectedNodes() {
+    if (toggle == 0) {
+        //Reduce the opacity of all but the neighbouring nodes
+        d = d3.select(this).node().__data__;
+        node.style("opacity", function (o) {
+            return neighboring(d, o) | neighboring(o, d) ? 1 : 0.3;
+        });
+        link.style("opacity", function (o) {
+            return d.index==o.source.index | d.index==o.target.index ? 1 : 0.3;
+        });
+        //Reduce the op
+        toggle = 1;
+    } else {
+        //Put them back to opacity=1
+        node.style("opacity", .8);
+        link.style("opacity", .8);
+        toggle = 0;
+    }
+}	
+
+function getByValue(arr, value) {
+
+  for (var i=0, iLen=arr.length; i<iLen; i++) {
+    if (arr[i].type === value) 
+		{
+		return arr[i];
+		}
+  }
+}  
+function unfixNode(d) {
+  d3.select(this).classed("fixed", d.fixed = false);
+}
+
+function dragstart(d) {
+  d3.select(this).classed("fixed", d.fixed = true);
+}
+
+
+function linkDistance (d) {
+	var node = nodes.filter(function(node1){
+		return node1.id===d.source.id});
+	return node[0].weight*25;
+}
+
+function rootPath(d){
+    var curNodeDetail = d.details.RootPath;
+    var rootMap = rootPathItinerary(d.name,curNodeDetail);
+    links.style("stroke-opacity", function(o) {
+            return (rootMap.has(o.source.name) && (rootMap.get(o.source.name) === o.target.name)) ? 1 : 0.1;
+    });
+}
+
+function rootPathItinerary(node,rootPathDet){
+    var i=0;
+    var map = d3.map();
+    map.set(node,rootPathDet[i]);//10,6
+    while(i+1 <rootPathDet.length){ //6,4,1
+            map.set(rootPathDet[i],rootPathDet[i+1]) ; //6,4 ; 4,1
+            i++;
+    }
+    return map;
+}
+</script>
+<body>
+</body>
+</html>

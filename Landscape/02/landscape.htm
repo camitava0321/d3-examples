@@ -1,0 +1,81 @@
+<html>
+<head>
+    <script type="text/javascript" src="strathausen-dracula-a6a5fa7/js/raphael-min.js"></script>
+    <script type="text/javascript" src="strathausen-dracula-a6a5fa7/js/dracula_graffle.js"></script>
+    <script type="text/javascript" src="strathausen-dracula-a6a5fa7/js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="strathausen-dracula-a6a5fa7/js/dracula_graph.js"></script>
+    <script type="text/javascript" src="strathausen-dracula-a6a5fa7/js/dracula_algorithms.js"></script>
+	<script language="javascript"> 
+	function toggle() {
+	var ele = document.getElementById("toggleText");
+	var text = document.getElementById("displayText");
+	if(ele.style.display == "block") {
+    		ele.style.display = "none";
+		text.innerHTML = "Show";
+  	}
+	else {
+		ele.style.display = "block";
+		text.innerHTML = "Hide";
+	}
+} 
+</script><script type="text/javascript">	
+		$(document).ready(function() {
+		var width = $(document).width();
+		var height = $(document).height();
+		var g = new Graph();
+		g.edgeFactory.template.style.directed = true;
+		g.addNode("GCSS",{color: "#FFFF00", height: "20", width: "20"});
+		g.addNode("MEPC",{color: "#ff9900", height: "32", width: "30"});
+		g.addNode("METS+",{color: "#FF3300", height: "42", width: "40"});
+		g.addNode("MyMaerskLine",{color: "#ff6600", height: "36", width: "35"});
+		g.addNode("CODS",{color: "#990000", height: "55", width: "55"});
+		g.addNode("SAP Finance",{color: "#FF0000", height: "49", width: "45"});
+		g.addEdge("MEPC", "GCSS");
+		g.addEdge("MyMaerskLine", "GCSS");
+		g.addEdge("GCSS", "METS+");
+		g.addEdge("GCSS", "CODS");
+		g.addEdge("GCSS", "SAP Finance");
+		var layouter = new Graph.Layout.Spring(g);
+	layouter.layout();
+		 
+	var renderer = new Graph.Renderer.Raphael('canvas', g, width-200, height-200);
+	renderer.draw();
+	});	
+	
+		var anim = Raphael.animation({cx: 10, cy: 20}, 2e3);
+circle1.animate(anim); // run the given animation immediately
+circle2.animate(anim.delay(500)); // run the given animation after 500 ms
+
+var erd = Joint.dia.erd;
+Joint.paper("world", 800, 250);
+
+var e1 = erd.Entity.create({
+    rect: {
+        x: 220,
+        y: 70,
+        width: 100,
+        height: 60
+    },
+    label: "Entity"
+});
+	</script>
+	<style type="text/css">
+		body {
+		overflow: hidden;
+		}
+	</style>
+	<a id="displayText" 
+	style="position:absolute;top:3;right:20;font:14px/20px Georgia, Garamond, Serif;text-decoration:none" 
+	href="javascript:toggle();">Show</a>
+	<div id="toggleText" 
+	style="height:250px;width:200px;display: none; background-color:#FFFFFF; font:16px/26px Georgia, Garamond, Serif;overflow:auto; border:1px solid; padding:2px;position:absolute;top:23;right:3;border-radius: 10px;">
+	<b>0</b>: 0.012844754348<br />
+	<b>1</b>: 0.0450707168391<br />
+	<b>2</b>: 0.0905605862334<br />
+	<b>3</b>: 0.073790623046<br />
+	</div>
+<p style="font-size:10px;"></p></head>
+<body>
+<div id="canvas"></div>
+</body>
+</html>

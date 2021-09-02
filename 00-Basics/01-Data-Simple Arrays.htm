@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta author="Amitava Chakraborty"/>
+<link rel="stylesheet" type="text/css" href="styles.css"/>
+<script src="../d3.js"></script>
+<title>Simple Arrays</title>
+</head>
+
+<body>
+<h1>D3 Practice</h1>
+<h2>Data Manipulation - Simple Array</h2>
+<p>
+A. Just print elements of an array <code>[ 15, -10, 111, 0, 215 ]</code>in the document.
+</p>
+<div id="comments"></div>
+<p>
+B. Just print elements of an array <code>[ 15, -10, 111, 0, 215 ]</code>in different paragraphs.
+</p>
+<script type="text/javascript">
+//Simple Dataset
+var dataset = [ 15, -10, 111, 0, 215 ];
+
+document.getElementById('comments').innerHTML="["+dataset+"]";
+//Print the Array content as new paragraphs.
+d3.select("body").selectAll("p1")    //select all p1's in the html (0 in this case) - p1 is arbitrary
+	.data(dataset)					//use this dataset
+	.enter()						//start using the data in the dataset one by one
+	.append("p")					//append a 'p' for every data item
+	.style("color","green")
+	.text(function(d) { return "Array Element is : "+d; });//As text - print the element itself	
+</script>
+<hr>
+<p>
+C. Print elements of an array <code>[ 21, 7, 1, 10, 25 ]</code> in divs.
+</p>
+<div class="chart"></div>
+
+<script type="text/javascript">
+
+//Simple Dataset
+var dataset1 = [ 21, 7, 1, 10, 25 ];
+var x = d3.scale.linear()
+    .domain([0, d3.max(dataset1)])
+    .range([0, 1000]);
+//Print the Array content as new divs.
+d3.select(".chart")
+  .selectAll("div")
+    .data(dataset1)
+  .enter().append("div")
+    .style("width", function(d) { return x(d)  + "px"; })
+    .style("background-color", "#AACCFF")
+    .style("color", "#112255")
+    .text(function(d) { return "Scaled Value: "+x(d)+" Actual Value: "+d; });
+</script>
+
+
+<hr>
+<p>
+D. Print elements of an array <code>[ 21, 7, 1, 10, 25 ]</code> in vector graphics.
+</p>
+<svg class="svgBars"></svg>
+<script type="text/javascript">
+
+var width = 420,	//This time we have to set the width of the svg space
+    barHeight = 20;
+	
+//Simple Dataset
+var dataset1 = [ 21, 7, 1, 10, 25 ];
+var x = d3.scale.linear()
+    .domain([0, d3.max(dataset1)])
+    .range([0, width]);
+
+var svgArea = d3.select(".svgBars")
+				.attr("width",width)
+				.attr("height",barHeight*dataset1.length);
+
+//Each bar is a g element which in turn contains a rect and a text. 
+//We use a data join (an enter selection) to create the g element for each data point. 
+//We then translate the g element vertically, creating a local origin for positioning the bar 
+//and its associated label.				
+var bar = svgArea.selectAll("g")				//g is an arbitrary element that we will create
+				.data(dataset1)
+				.enter()
+				.append("g")
+				.attr("transform", function(d,i){return "translate(0,"+i*barHeight+")";});
+
+//There is exactly one rect and one text element per g element, 
+//So we can append these elements directly to the g, without needing additional data joins. 
+//The appended rects and texts inherit data from their parent g element
+//Hence we can use data to compute the bar width and label position.
+bar.append("rect")
+	.attr("width",x)
+	.attr("height",barHeight-1);
+
+bar.append("text")	
+	.attr("x", function(d){return x(d)-3;})
+	.attr("y",barHeight/2)
+	.attr("dy",".35em")
+	.text(function(d){return d;});
+
+</script>
+<hr/>
+<p>
+E. Print data <b>from a file</b> in vector graphics.
+</p>
+<svg class="svgFileBars"></svg>
+<script type="text/javascript">
+var width = 800,	//This time we have to set the width of the svg space
+	height = 0,		//Initially set this to 0
+    barHeight = 20;
+	
+var x = d3.scale.linear()
+    .range([0, width]);
+
+var svgArea1 = d3.select(".svgFileBars")
+				.attr("width",width);
+
+
+//Now the dataset is in a separate csv file. Each line is a row of data and the first line is the header row -  //specifies the column names.
+//d3.csv - downloads the file from a web server and then parse it, - converts the text of the file into usable //JavaScript objects
+//Downloads are asynchronous. When d3.tsv is called, it returns immediately while the file downloads in the //background. At some point in the future when the download finishes, a callback function is invoked with the new //data, or an error if the download failed. 
+//Thus the chart implementation is separated into two phases. 
+//First, we initialize as much as we can when the page loads and before the data is available. 
+//Set the chart size when the page loads, so that the page does not reflow after the data downloads. 
+//Second, we complete the remainder of the chart inside the callback function.
+//d3.csv(<data-file>,[<callback]);
+d3.csv("planets.csv", function(error,data){
+	console.log(error);
+	console.log(data);
+	var headerRow = Object.keys(data[0]);
+	console.log(headerRow);
+	data.map(function (d){
+		d.mass = +d.mass*1024; // coerce to number
+	});
+	var maxDomain=d3.max(data, function(d) { return d.mass; });
+	document.getElementById('comments').innerHTML=maxDomain;
+	x.domain([0,maxDomain]);
+	height=barHeight*data.length;
+	console.log(height);
+	svgArea1.attr("height",height);
+//Each bar is a g element which in turn contains a rect and a text. 
+//We use a data join (an enter selection) to create the g element for each data point. 
+//We then translate the g element vertically, creating a local origin for positioning the bar 
+//and its associated label.				
+var bar = svgArea1.selectAll("g")				//g is an arbitrary element that we will create
+				.data(data)
+				.enter()
+				.append("g")
+				.attr("transform", function(d,i){return "translate(0,"+i*barHeight+")";});
+
+//There is exactly one rect and one text element per g element, 
+//So we can append these elements directly to the g, without needing additional data joins. 
+//The appended rects and texts inherit data from their parent g element
+//Hence we can use data to compute the bar width and label position.
+bar.append("rect")
+	.attr("width",function(d){return x(d.mass);})
+	.attr("height",barHeight-1)
+    .style("fill", "#114477")
+	;
+
+bar.append("text")	
+	.attr("x", function(d){return x(d.mass)-3;})
+	.attr("y",barHeight/2)
+	.attr("dy",".35em")
+    .style("color", "#112255")
+	.text(function(d){return d.name+","+d.mass;});
+}); //End - d3.csv();
+
+</script>
+<hr/>
+<p>
+F.Print elements of an array <code>[ 21, 7, 1, 10, 25, 23,4,14, 22,33,45,51,15,7,27,39,11];</code> in vector graphics (column-wise).
+</p>
+<svg class="svgCols"></svg>
+<script type="text/javascript">
+var width = 960,	//This time we have to set the width of the svg space
+	height=500;		//This time we have to set the height of the svg space
+	
+//Simple Dataset
+var dataset1 = [ 21, 7, 1, 10, 25, 23,4,14, 22,33,45,51,15,7,27,39,11 ];
+
+//For a column chart - we swap x with y. 
+//In y scale, the range becomes [height, 0] rather than [0, width] - 
+//because the origin of SVG’s coordinate system is in the top-left corner. 
+//But we want the zero-value to be positioned at the bottom of the chart, rather than the top. 
+//Also now we need to position the bar rects by setting the "y" and "height" attributes, whereas before 
+//we only needed to set "width". 
+//because the default value of the "x" attribute was zero, and the old bars were all left-aligned.
+var y = d3.scale.linear()
+    .domain([0, d3.max(dataset1)])
+    .range([height, 0]);
+
+//In this case chart width is fixed and the bar width variable. 
+var svgArea = d3.select(".svgCols")
+				.attr("width",width)
+				.attr("height",height);
+//So we compute the barWidth by dividing the available chart width by the size of the dataset.
+var barWidth = width / dataset1.length;
+
+//We use a data join (an enter selection) to create the g element for each data point. 
+//We then translate the g element horizontally, creating a local baseline for positioning the bar 
+//and its associated label.				
+var bar = svgArea.selectAll("g")				//g is an arbitrary element that we will create
+				.data(dataset1)
+				.enter()
+				.append("g")
+				.attr("transform", function(d,i){return "translate("+i*barWidth+",0)";});
+
+//Each bar is a g element which in turn contains a rect and a text. 
+
+//There is exactly one rect and one text element per g element, 
+//So we can append these elements directly to the g, without needing additional data joins. 
+//The appended rects and texts inherit data from their parent g element
+//Hence we can use data to compute the bar width and label position.
+bar.append("rect")
+	.attr("y", function(d){return y(d);})
+	.attr("width",barWidth-1)
+	.attr("height",function(d){return (height-y(d));});
+
+//Bar labels must be positioned for columns - centered just below the top of the column. 
+//The new "dy" attribute value of ".75em" anchors the label at approximately the text’s cap height
+bar.append("text")	
+	.attr("y", function(d){return y(d)+3;})
+	.attr("x",barWidth/2)
+	.attr("dy",".75em")
+	.text(function(d){return d;});
+
+
+</script>
+<hr/>
+<p>
+G.Print data <b>from a file</b> in vector graphics (column-wise).
+</p>
+<svg class="svgFileCols"></svg>
+<script type="text/javascript">
+var width = 900,	//This time we have to set the width of the svg space
+	height = 300,		//Initially set this to 0
+    barWidth = 0;
+	
+//For a column chart - we swap x with y. 
+//In y scale, the range becomes [height, 0] rather than [0, width] - 
+//because the origin of SVG’s coordinate system is in the top-left corner. 
+//But we want the zero-value to be positioned at the bottom of the chart, rather than the top. 
+//Also now we need to position the bar rects by setting the "y" and "height" attributes, whereas before 
+//we only needed to set "width". 
+//because the default value of the "x" attribute was zero, and the old bars were all left-aligned.
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+//In this case chart width is fixed and the bar width variable. 
+var svgArea2 = d3.select(".svgFileCols")
+				.attr("width",width);
+//Now the dataset is in a separate csv file. Each line is a row of data and the first line is the header row -  //specifies the column names.
+//d3.csv - downloads the file from a web server and then parse it, - converts the text of the file into usable //JavaScript objects
+//Downloads are asynchronous. When d3.tsv is called, it returns immediately while the file downloads in the //background. At some point in the future when the download finishes, a callback function is invoked with the new //data, or an error if the download failed. 
+//Thus the chart implementation is separated into two phases. 
+//First, we initialize as much as we can when the page loads and before the data is available. 
+//Set the chart size when the page loads, so that the page does not reflow after the data downloads. 
+//Second, we complete the remainder of the chart inside the callback function.
+//d3.csv(<data-file>,[<callback]);
+d3.csv("planets.csv", function(error,data){
+	var headerRow = Object.keys(data[0]);
+	data.map(function (d){
+		d.mass = +d.mass*1024; // coerce to number
+	});
+	var maxDomain=d3.max(data, function(d) { return d.mass; });
+	data.map(function (d){
+		var massRatio=maxDomain/d.mass;
+		d.mass = d.mass+((massRatio<=1)?0:(massRatio*2));
+	});
+	//document.getElementById('comments').innerHTML="none";
+	y.domain([0,maxDomain]);
+	barWidth=width/data.length;
+	height=maxDomain/1024;
+	svgArea2.attr("height",height);
+//Each bar is a g element which in turn contains a rect and a text. 
+//We use a data join (an enter selection) to create the g element for each data point. 
+//We then translate the g element vertically, creating a local origin for positioning the bar 
+//and its associated label.				
+var bar = svgArea2.selectAll("g")				//g is an arbitrary element that we will create
+				.data(data)
+				.enter()
+				.append("g")
+				.attr("transform", function(d,i){return "translate("+i*barWidth+",0)";});
+
+//There is exactly one rect and one text element per g element, 
+//So we can append these elements directly to the g, without needing additional data joins. 
+//The appended rects and texts inherit data from their parent g element
+//Hence we can use data to compute the bar width and label position.
+bar.append("rect")
+	.attr("y", 0)
+	.attr("width",barWidth-1)
+	.attr("height",function(d){return (d.mass/1024);});
+
+bar.append("title")
+      .text(function(d) { return d.name; });
+//Bar labels must be positioned for columns - centered just below the top of the column. 
+//The new "dy" attribute value of ".75em" anchors the label at approximately the text’s cap height
+bar.append("text")	
+	.attr("y", function(d){return y(d.mass)+3;})
+	.attr("x",barWidth/2)
+	.attr("dy",".75em")
+	.text(function(d){return d.mass/1024;});
+}); //End - d3.csv();
+
+
+</script>
+<div class="ibm">
+<img src="ibm_logo.gif" width=100 height=50/>
+</div>
+<div class="amc">
+<img src="amc.jpg" width=100 height=40/>
+</div>
+</body>
+</html>

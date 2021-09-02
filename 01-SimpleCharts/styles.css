@@ -1,0 +1,31 @@
+@CHARSET "ISO-8859-1";
+body {
+  font: 11px sans-serif;
+}
+h1 {
+  font: 40px sans-serif;
+  background-color: #aed7ff;
+  text-align: left;
+  padding: 5px;
+  margin: 1px;
+  color: #0000cc;
+}
+h2 {
+  font: 20px sans-serif;
+  background-color: #aed7ff;
+  text-align: left;
+  padding: 5px;
+  margin: 1px;
+  color: #0000cc;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.area {
+  fill: #ff8080;
+}

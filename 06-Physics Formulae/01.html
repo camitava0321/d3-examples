@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Physics Formulae</title>
+  <meta charset="utf-8" />
+<script src="../d3.min.js"></script>
+<style>
+.link {
+  stroke: #fcfcfc;
+}
+
+.node text {
+  pointer-events: none;
+  font: 12px Calibri, Arial;
+}
+path.link {
+  fill: none;
+  stroke: #666;
+  stroke-width: 1.5px;
+}
+
+marker#licensing {
+  fill: green;
+}
+
+path.link.licensing {
+  stroke: green;
+}
+
+path.link.resolved {
+  stroke-dasharray: 0,2 1;
+}
+
+circle {
+  fill: #ccc;
+  stroke: #333;
+  stroke-width: 1.5px;
+}
+
+text {
+  font: 10px sans-serif;
+  pointer-events: none;
+}
+
+text.shadow {
+  stroke: #fff;
+  stroke-width: 3px;
+  stroke-opacity: .8;
+}
+
+
+</style>	
+</head>
+<body>
+<script>
+/* (c) Michiel van der Blonk
+ * a model of basic phycics quantities
+ * July 2012
+ * some code adapted from http://bl.ocks.org/1153292
+ */
+var width = 960,
+    height = 700,
+    r = 12,
+    gravity = 0.1,
+    distance = 100,
+    charge = -800,
+    fill = d3.scale.category10(),
+
+    // these are the quantities
+    // the groups are
+    // 1: essential axiomatic units m, l, t
+    // 2: related to movement
+    // 3: related to energy
+    // 4: related to a single unit
+    nodes=[
+        {name:"Mass", symbol:"m", unit:"kg", group:1}, 
+        {name:"Time", symbol:"t", unit:"s", group:1}, 
+        {name:"Length", symbol:"d", unit:"m", group:1},
+        {name:"Force", symbol:"F", unit:"N", group:3, formula:"F=m.a"}, 
+        {name:"Velocity", symbol:"v", unit:"m/s", group:2, formula:"v=d/t"}, 
+        {name:"Acceleration", symbol:"a", unit:"m/(s.s)", group:2, formula:"a=v/d"},
+        {name:"Work", symbol:"W", unit:"J", group:3, formula:"W=F.d"}, 
+        {name:"Momentum", symbol:"p", unit:"kg.m/s", group:2, formula:"p=m.v"}, 
+        {name:"Impulse", symbol:"I", unit:"N.s", group:2, formula:"I=F.t"},
+        {name:"Energy (k)", symbol:"E", unit:"J", group:3, formula:"Ek=0.5m.v.v"}, 
+        {name:"Power", symbol:"P", unit:"W", group:3, formula:"P=W/t"}, 
+        {name:"Pressure", symbol:"p", unit:"Pa", group:3, formula:"p=F/A"},
+        {name:"Area", symbol:"A", unit:"m.m", group:4, formula:"A=d*d"}, 
+        {name:"Volume", symbol:"V", unit:"m.m.m", group: "4", formula:"V=A*d"}, 
+        {name:"Frequency", symbol:"f", unit:"Hz", group:4, formula:"f=1/t"}
+        ],
+
+    // the relations shown can be calculated using
+    // formulas from either 1 or 2 other quantities
+    links=[
+        {"source":1,"target":4,"value":1}, {"source":2,"target":4,"value":1}, // velocity
+        {"source":2,"target":5,"value":1}, {"source":4,"target":5,"value":1}, // acceleration
+        {"source":0,"target":3,"value":1}, {"source":5,"target":3,"value":1}, // force
+        {"source":4,"target":7,"value":1}, {"source":3,"target":7,"value":1}, // momentum
+        {"source":2,"target":6,"value":1}, {"source":3,"target":6,"value":1}, // work
+        {"source":0,"target":9,"value":1}, {"source":4,"target":9,"value":1}, // energy
+        {"source":2,"target":12,"value":1}, // area 
+        {"source":2,"target":13,"value":1}, {"source":12,"target":13,"value":1}, // volume
+        {"source":12,"target":11,"value":1}, {"source":3,"target":11,"value":1}, // pressure
+        {"source":1,"target":10,"value":1}, {"source":6,"target":10,"value":1}, // power
+        {"source":3,"target":8,"value":1}, {"source":1,"target":8,"value":1}, // impulse
+        {"source":1,"target":14,"value":1}
+    ];
+
+// create the canvas for the model
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+// d3 provides the calculations to animate the model
+var force = d3.layout.force()
+    .gravity(gravity)
+    .distance(distance)
+    .charge(charge)
+    .size([width, height]);
+
+// add data, and start the animation
+force.nodes(nodes)
+    .links(links)
+    .start();
+
+// add classnames to links for styling
+var link = svg.selectAll(".link")
+    .data(links)
+    .enter().append("line")
+    .attr("class", "link");
+
+// enable drag of nodes
+var node = svg.selectAll(".node")
+    .data(nodes)
+    .enter().append("g")
+    .attr("class", "node")
+    .call(force.drag);
+
+// draw circles
+var circle=node.append("svg:circle").attr("r", r - .75).style("fill", function(d) {
+        return fill(d.group);
+    }).style("stroke", function(d) {
+        return d3.rgb(fill(d.group)).darker();
+    }).call(force.drag);
+
+// add tooltip so it shows the unit and formula
+circle.append("svg:title").text(function(d, i) { return "Unit: " + d.unit + ", Formula: " + d.formula; });
+
+
+// create arrowheads (end markers)
+// three type of styles can be made for each group
+// this feature is not used
+svg.append("svg:defs").selectAll("marker")
+    .data([1,2,3])
+  .enter().append("svg:marker")
+    .attr("id", String)
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 22)
+    .attr("refY", -1.5)
+    .attr("markerWidth", 6)
+    .attr("markerHeight", 6)
+    .attr("fill-color","#cccccc")
+    .attr("orient", "auto")
+  .append("svg:path")
+    .attr("d", "M0,-5L10,0L0,5");
+
+// attach markers
+var path = svg.append("svg:g").selectAll("path")
+    .data(force.links())
+    .enter().append("svg:path")
+    .attr("class", function(d) { return "link " + d.value; })
+    .attr("marker-end", function(d) { return "url(#" + d.value + ")"; });
+
+// create a group for text elements
+var text = svg.append("svg:g").selectAll("g")
+    .data(force.nodes())
+    .enter().append("svg:g");
+
+// create shadow in white
+text.append("svg:text")
+      .attr("dx", 12)
+      .attr("dy", ".35em")
+      .attr("class", "shadow")
+      .text(function(d) { return d.name;}
+  );
+
+// create name on top of shadow
+text.append("svg:text")
+      .attr("dx", 12)
+      .attr("dy", ".35em")
+      .text(function(d) { return d.name;}
+  );
+
+// put the symbol, e.g. kg inside the circle
+text.append("svg:text")
+      .attr("dx", -4)
+      .attr("dy", 2)
+      .attr("fill", "#ffffff")
+      .text(function(d) { return d["symbol"]?d.symbol:"";}
+  );
+
+force.on("tick", tick);
+
+// move circles using force
+function tick() {
+  path.attr("d", function(d) {
+    var dx = d.target.x - d.source.x,
+        dy = d.target.y - d.source.y,
+        dr = 0; // straight lines (0=straight, 1=round)
+        // alternatively use dr = Math.sqrt(dx * dx + dy * dy); for similar arcs
+    return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+  });
+
+  circle.attr("transform", function(d) {
+    return "translate(" + d.x + "," + d.y + ")";
+  });
+
+  text.attr("transform", function(d) {
+    return "translate(" + d.x + "," + d.y + ")";
+  });
+}
+
+// when clicked redraw the diagram
+d3.select("body").on("click", function() {
+  nodes.forEach(function(o, i) {
+    o.x += (Math.random() - .5) * 100;
+    o.y += (Math.random() - .5) * 100;
+  });
+  force.resume();
+});
+</script>
+<body>
+</body>
+</html>

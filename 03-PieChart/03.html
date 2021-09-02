@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Basic Pie Charts</title>
+    <link rel="stylesheet" href="normalize.css">
+    <script src="../d3.js"></script>
+	<style>
+      .legend {                            
+        font-size: 12px;                   
+      }                                    
+      rect {                               
+        stroke-width: 2;                   
+      }                                    
+    </style>
+  </head>
+  <body>
+    <script>
+	//Data used for the first few charts
+	var dataset = [
+	  { label: 'Infosys', count: 10 }, 
+	  { label: 'Cognizant', count: 20 },
+	  { label: 'IBM', count: 30 },
+	  { label: 'TCS', count: 40 }
+	];
+
+	var width = 360;
+	var height = 360;
+	var radius = Math.min(width, height) / 2;
+    </script>
+	<table>
+		<tr>
+		<td><h1>Simple Pie Chart</h1><br/><div id="simplepie"></div></td>
+		<td><h1>DoughNut - with Legends</h1><br/><div id="donut"></div>
+</td>
+		</tr>
+	</table>
+	
+    <script>
+    var colorSimple = d3.scale.category20();
+
+	var svgSimple = d3.select('#simplepie')
+	  .append('svg')
+	  .attr('width', width)
+	  .attr('height', height)
+	  .append('g')
+	  .attr('transform', 'translate(' + (width / 2) + 
+		',' + (height / 2) + ')');  //Because our reference is now to the g element, 
+									//we center it in the containing svg element.
+
+	//Define radius - determines the size of the overall chart
+	//D3's svg.arc() provides outerRadius() method to define/set the radius of the pie
+	var arc = d3.svg.arc()
+	  .outerRadius(radius);
+	
+	//Define the start and end angles of each segment
+	var pie = d3.layout.pie()
+	  .value(function(d) { return d.count; })
+	  .sort(null);
+	//We need to define how to extract the numerical data from each entry in the dataset
+	//Specify sort(null) to disable sorting of the entries, 
+	//because the data should be sorted before (we have it sorted the way we want) otherwise
+	//sorting will mess with the animation.
+	
+	
+
+	var path = svgSimple.selectAll('path')	//Select all path elements inside svg
+	  .data(pie(dataset))					//The data() method associates the dataset with the path elements
+											//We do so by passing it through our pie function, 
+											//which knows how to extract the values and give them meaning in the context of a pie chart.
+	  .enter()
+	  .append('path')
+	  .attr('d', arc)
+	  .attr('fill', function(d, i) { 
+		return colorSimple(d.data.label);
+	  });
+    </script>
+
+	<script>
+	var donutWidth = 75; 
+    var colorDonut = d3.scale.category20b();
+	var svgDonut = d3.select('#donut')
+	  .append('svg')
+	  .attr('width', width)
+	  .attr('height', height)
+	  .append('g')
+	  .attr('transform', 'translate(' + (width / 2) + 
+		',' + (height / 2) + ')');
+
+	var arc = d3.svg.arc()
+		.innerRadius(radius-donutWidth)
+	  .outerRadius(radius);
+	var pie = d3.layout.pie()
+	  .value(function(d) { return d.count; })
+	  .sort(null);
+
+	var path = svgDonut.selectAll('path')
+	  .data(pie(dataset))
+	  .enter()
+	  .append('path')
+	  .attr('d', arc)
+	  .attr('fill', function(d, i) { 
+		return colorDonut(d.data.label);
+	  });
+
+	//Adding legends
+	var legendRectSize = 18;
+    var legendSpacing = 4;
+	
+	var legend = svgDonut.selectAll('.legend')                     
+	  .data(colorDonut.domain())                                   
+	  .enter()                                                
+	  .append('g')                                            
+	  .attr('class', 'legend')                                
+	  .attr('transform', function(d, i) {                     
+		var height = legendRectSize + legendSpacing;          
+		var offset =  height * colorDonut.domain().length / 2;     
+		var horz = -2 * legendRectSize;                       
+		var vert = i * height - offset;                       
+		return 'translate(' + horz + ',' + vert + ')';        
+	  });                                                     
+
+	legend.append('rect')                                     
+	  .attr('width', legendRectSize)                          
+	  .attr('height', legendRectSize)                         
+	  .style('fill', colorDonut)                                   
+	  .style('stroke', colorDonut);                                
+	  
+	legend.append('text')                                     
+	  .attr('x', legendRectSize + legendSpacing)              
+	  .attr('y', legendRectSize - legendSpacing)              
+	  .text(function(d) { return d; });                       
+
+	  
+  </script>
+	<h1>Pie Chart from external data</h1>
+    <div id="externalpie"></div>
+	<script>
+    var colorExternalpie = d3.scale.category20c();
+	var svgExternalpie = d3.select('#externalpie')
+	  .append('svg')
+	  .attr('width', width)
+	  .attr('height', height)
+	  .append('g')
+	  .attr('transform', 'translate(' + (width / 2) + 
+		',' + (height / 2) + ')');
+
+	var arc = d3.svg.arc()
+		.innerRadius(radius-donutWidth)
+	  .outerRadius(radius);
+	var pie = d3.layout.pie()
+	  .value(function(d) { return d.count; })
+	  .sort(null);
+
+	d3.csv('data.csv', function(error, dataset) {           
+          dataset.forEach(function(d) {
+            d.count = +d.count;                                 
+          });
+		  
+	var path = svgExternalpie.selectAll('path')
+	  .data(pie(dataset))
+	  .enter()
+	  .append('path')
+	  .attr('d', arc)
+	  .attr('fill', function(d, i) {
+		return colorExternalpie(d.data.label);
+	  });
+
+	//Adding legends
+	var legend = svgExternalpie.selectAll('.legend')                     
+	  .data(colorExternalpie.domain())                                   
+	  .enter()                                                
+	  .append('g')                                            
+	  .attr('class', 'legend')                                
+	  .attr('transform', function(d, i) {
+console.log(colorExternalpie.domain());	  
+		var height = legendRectSize + legendSpacing;          
+		var offset =  height * colorExternalpie.domain().length / 2;     
+		var horz = -2 * legendRectSize;                       
+		var vert = i * height - offset;                       
+		return 'translate(' + horz + ',' + vert + ')';        
+	  });                                                     
+
+	legend.append('rect')                                     
+	  .attr('width', legendRectSize)                          
+	  .attr('height', legendRectSize)                         
+	  .style('fill', colorExternalpie)                                   
+	  .style('stroke', colorExternalpie);                                
+	  
+	legend.append('text')                                     
+	  .attr('x', legendRectSize + legendSpacing)              
+	  .attr('y', legendRectSize - legendSpacing)              
+	  .text(function(d) { return d; });                       
+	
+	});
+	  
+  </script>
+  </body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+div.ibm {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 100px;
+}
+div.maersk {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 70px;
+}
+}
+</style>
+<body>
+<script src="d3.min.js"></script>
+
+<h2>Maersk Line Application Landscape</h2>
+
+<script type="text/javascript">
+
+		var dataset = [ 5, 10, 15, 20, 25 ];
+			
+			d3.select("body").selectAll("p")
+				.data(dataset)
+				.enter()
+				.append("p")
+				.text(function(d) { return d; });
+
+
+
+//data set file is read and the entire json data is put in the variable graph.	
+d3.json("landscapeData.json", function(error, graph) {
+  if (error) return console.error(error);
+  
+  console.log(graph.applications.length);
+
+  d3.select("body").selectAll("p")
+				.data(graph.applications[0])
+				.enter()
+				.append("p")
+				.text(function(d) { return d; });
+
+for (var i=0;i<graph.applications.length;i++)
+  {
+	console.log(graph.applications[i]);
+  }
+
+	
+	
+function getDetails(d) {
+    return d.applications ? d.applications.map(getDetails) : d.name;
+}	
+});
+
+
+</script>
+
+
+<div class="ibm">
+<img src="ibm_logo.gif" width=100 height=50/>
+</div>
+<div class="maersk">
+<img src="Maersk_logo.png" width=70 height=63/>
+</div>
+
+</body>
+</script>

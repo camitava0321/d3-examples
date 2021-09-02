@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<title>Least Squares Fit</title>
+
+<style>
+
+  body {
+    font-family: "Helvetica", sans-serif;
+    font-size: 10px;
+    margin: 8px;
+  }
+
+  .axis {
+    font: 9px sans-serif;
+  }
+
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+  .path {
+    fill: none;
+    stroke: rgba(200,200,255,1);
+    stroke-width: 2px;
+  }
+
+  .point {
+    fill: rgba(180,180,225,1);
+  }
+
+  .trendline {
+
+    stroke: rgba(80,35,35,1);
+    stroke-width: 1px;
+    stroke-opacity: 0.75;
+
+  }
+
+</style>
+<script src="../../d3.js"></script>
+</head>
+<body>
+<h1>Least Squares Line Fit</h1>
+<p>
+</p>
+
+<script>
+
+(function() {
+
+  var marginX=40, marginY=20;
+  var margin = {top: marginY, right: marginY, bottom: marginX, left: marginX},
+      width = 944 - margin.left - margin.right,
+      height = 480 - margin.top - margin.bottom;
+
+  var numSteps = 100;
+  var yMax = 150;
+
+  // X scale
+  var xScale = d3.scale.linear()
+      .domain([0, numSteps])
+      .range([0, width]);
+
+  // Y scale
+  var yScale = d3.scale.linear()
+      .domain([0, yMax])
+      .range([height, 0]);
+
+  // Draw SVG
+  var svg = d3.select("body").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  // Draw axes
+  var xAxis = d3.svg.axis()
+      .scale(xScale)
+      .ticks(5)
+      .orient("bottom");
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  var yAxis = d3.svg.axis()
+      .scale(yScale)
+      .ticks(3)
+      .orient("left");
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis);
+
+  // equ text in top left
+  var eqText = svg.append("text")
+      .attr("id", "eq-text")
+      .style("text-anchor", "start")
+      .attr("x", 8)
+      .attr("y", 8);
+
+  // Get data from CSV and draw line
+  d3.csv("data.csv", function(error, data) {
+
+    var lineFunction = d3.svg.line()
+        .x(function(d) { return xScale(d['x']); })
+        .y(function(d) { return yScale(d['y']); });
+
+    svg.append("path")
+        .datum(data)
+        .attr("class", "path")
+        .attr("d", lineFunction);
+
+	d3.select("svg").selectAll("rect")
+		.data(data)
+		.enter()
+			.append("rect")
+				.attr("x",function(d){ return xScale(d['x']); })
+				.attr("y", -1)
+				.attr("width", "10px")
+				.attr("height",height+"px")
+		        .attr("transform","translate("+marginX+","+marginY+")")
+				.style("fill", function(d,i) {return i%2?"#fff":"#eee"})
+				.style("opacity",0.5)
+				;
+				
+	d3.select("svg").selectAll("circle")
+		.data(data)
+		.enter()
+			.append("circle")
+		        .attr("cx", function(d){ return xScale(d['x']); })
+		        .attr("cy", function(d){ return yScale(d['y']); })
+		        .attr("r", "3px")
+		        .attr("transform","translate("+marginX+","+marginY+")")
+		        .attr("class", "point");
+			
+	/*			
+    svg.append("circle")
+        .datum(data)
+        .attr("cx", function(d){ console.log(d); return xScale(d['x']); })
+        .attr("cy", function(d){ return yScale(d['y']); })
+        .attr("r", "1px")
+        .style("fill", "#FF0000");
+      */  
+
+    // get the x and y values for least squares
+    var xSeries = data.map(function(d) { return parseFloat(d['x']); });
+    var ySeries = data.map(function(d) { return parseFloat(d['y']); });
+    
+    console.log('xSeries: ' + xSeries);
+    console.log('ySeries: ' + ySeries);    
+
+    var leastSquaresCoeff = leastSquares(xSeries, ySeries);
+
+    var slope = leastSquaresCoeff[0];
+    var intercept = leastSquaresCoeff[1];
+    var rSquare = leastSquaresCoeff[2];
+
+    console.log("slope: " + slope);
+    console.log("intercept: " + intercept);
+
+    var trendline = svg.append("line")
+        .attr("x1", xScale(0.))
+        .attr("y1", yScale(intercept))
+        .attr("x2", xScale(numSteps))
+        .attr("y2", yScale(numSteps*slope + intercept))
+        .classed("trendline", true);
+
+    d3.select('#eq-text').text("y = " + format2d(slope) 
+                                + "x + " + format2d(intercept));
+
+  })
+
+  // returns slope, intercept and r-square of the line
+  // from: http://bl.ocks.org/benvandyke/8459843
+  function leastSquares(xSeries, ySeries) {
+    var reduceSumFunc = function(prev, cur) { return prev + cur; };
+    
+    var xBar = xSeries.reduce(reduceSumFunc) * 1.0 / xSeries.length;
+    var yBar = ySeries.reduce(reduceSumFunc) * 1.0 / ySeries.length;
+
+    var ssXX = xSeries.map(function(d) { return Math.pow(d - xBar, 2); })
+      .reduce(reduceSumFunc);
+    
+    var ssYY = ySeries.map(function(d) { return Math.pow(d - yBar, 2); })
+      .reduce(reduceSumFunc);
+      
+    var ssXY = xSeries.map(function(d, i) { return (d - xBar) * (ySeries[i] - yBar); })
+      .reduce(reduceSumFunc);
+      
+    var slope = ssXY / ssXX;
+    var intercept = yBar - (xBar * slope);
+    var rSquare = Math.pow(ssXY, 2) / (ssXX * ssYY);
+    
+    return [slope, intercept, rSquare];
+  }
+
+  var format2d = d3.format("0.1f");
+
+})()
+
+</script>
+
+</body>
+</html>

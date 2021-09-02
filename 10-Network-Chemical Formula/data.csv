@@ -1,0 +1,8 @@
+id,name,type,parent,reltype
+0,Amitava,M,3,spouse
+1,Chayanika,F,5,
+2,Niharika,F,0,
+3,Bimal,M,6,
+4,Bithika,F,6,
+5,Tapan,M,6,
+6,Unknown,U,0,

@@ -1,0 +1,89 @@
+<html>
+  <head>
+    <title>Maerskline Landscape</title>
+    <script type="text/javascript" src="protovis.js"></script>
+    <script type="text/javascript" src="dummyData.js"></script>
+    <style type="text/css">
+
+body {
+  font: 20px Helvetica Neue, sans-serif;
+  width: 580px;
+}
+
+h1 {
+  font-size: medium;
+  padding-bottom: 10px;
+  border-bottom: solid 1px #bbb;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>Maerskline Landscape</h1>
+  <p id="demo"></p>
+    <script type="text/javascript+protovis">
+
+/* Convert from tabular format to array of objects. */
+var cols = nba.shift();   //JS:Assigns the first row of the data matrix to cols
+
+//JQ:creates a new array with the results of calling a provided function on every element in this array
+//document.write(pv.dict(cols, function() d[this.index]));
+nba = nba.map(function(d) pv.dict(cols, function() d[this.index]));
+cols.shift();
+
+/* The color scale ranges 3 standard deviations in each direction. */
+
+document.getElementById("demo").innerHTML = "variable debug space";
+
+/* The cell dimensions. */
+var w = 100, h = 100;
+
+var vis = new pv.Panel()
+    .width(cols.length * w)
+    .height(nba.length * h)
+    .top(100)
+    .left(100)
+    .right(.5)
+    .bottom(.5);
+
+vis.add(pv.Panel)
+    .data(cols)
+    .left(function() this.index * w)
+    .width(w)
+  .add(pv.Panel)
+    .data(nba)
+    .top(function() this.index * h)
+    .height(h)
+    .strokeStyle("white")
+    .lineWidth(1)
+	.fillStyle(function(d,f) d[f]==0?"rgb(0,0,0)":"rgb(0,255,80)")
+    .title(function(d, f) d.Name + "--" + f + " : " + d[f]+" interfaces")
+	.add(pv.Label)
+	.font("8px sans-serif")
+    .text((function(d,f) d[f]+" interfaces"))
+	.root.render();
+	
+vis.add(pv.Label)
+    .data(cols)
+    .left(function() this.index * w + w / 2)
+    .top(0)
+    .textAngle(-Math.PI / 2)
+	.font("15px sans-serif")
+    .textBaseline("middle");
+
+vis.add(pv.Label)
+    .data(nba)
+    .left(0)
+    .top(function() this.index * h + h / 2)
+    .textAlign("right")
+	.font("15px sans-serif")
+    .textBaseline("middle")
+    .text(function(d) d.Name);
+
+vis.render();
+
+    </script>
+<p></p>	
+<p></p>	
+  </body>
+</html>

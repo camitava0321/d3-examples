@@ -1,0 +1,25 @@
+<folder>
+	<folder>
+		<output>John Doe</output>
+	</folder>
+	<items>
+		<item>
+			<name>Alice</name>
+			<grade>80</grade>
+		</item>
+		<item>
+			<name>Bob</name>
+			<grade>90</grade>
+		</item>
+	</items>
+</folder>
+<flow>
+	<folder>
+		<output>
+			<propmt>
+				<item>John Doe</item>
+			</propmt>
+		</output>
+	</folder>
+	<prompts/>
+</flow>

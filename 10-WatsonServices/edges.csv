@@ -1,0 +1,61 @@
+sourceid,relationid,reltype
+11,12,user interaction
+11,15,user interaction
+11,21,use
+12,13,use
+12,16,use
+13,14,use
+13,32,get text
+14,27,get intent
+14,28,get entities
+14,29,get keywords
+14,30,get sentiment
+15,16,use
+15,17,use
+15,19,use
+15,20,use
+15,22,use
+15,25,use
+15,35,use
+16,19,use
+16,20,use
+16,24,use
+16,25,use
+17,10,annotate text
+18,12,return speech to user
+18,33,use
+19,26,use
+19,28,use
+19,29,get entities
+19,29,get keywords
+19,30,get sentiment
+19,31,use
+19,34,use
+20,35,use
+23,15,use
+24,0,implementation
+25,1,implementation
+26,2,implementation
+27,3,implementation
+28,4,implementation
+29,4,implementation
+30,4,implementation
+31,5,implementation
+32,6,implementation
+33,7,implementation
+34,8,implementation
+35,9,implementation
+28,36,3rd Party Implementation
+28,37,3rd Party Implementation
+28,38,3rd Party Implementation
+28,39,3rd Party Implementation
+28,40,3rd Party Implementation
+28,41,3rd Party Implementation
+28,42,3rd Party Implementation
+24,43,3rd Party Implementation
+24,44,3rd Party Implementation
+24,45,3rd Party Implementation
+24,46,3rd Party Implementation
+35,47,3rd Party Implementation
+35,48,3rd Party Implementation
+35,49,3rd Party Implementation

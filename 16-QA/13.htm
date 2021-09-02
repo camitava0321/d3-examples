@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="styles.css">
+<meta charset="utf-8">
+<script src="../jquery.js" type="text/javascript"></script>
+<script src="../d3.min.js"></script>
+<link rel="stylesheet" href="../jquery-ui-1.11.4.custom/jquery-ui.css">
+<script src="../jquery-ui-1.11.4.custom/jquery-ui.js"></script>
+<script src="qa2.js"></script>
+</head>
+<body>
+
+
+
+<div class="panel">
+<div class="ui-widget">
+		<label for="question">Question: </label>
+		<input id="question">
+</div>
+<div class="ui-widget">
+		<label for="linkedQuestion">Link to Question: </label>
+		<input id="linkedQuestion">
+</div>
+</div>
+<a href="javascript:void(0);" class="slider-arrow show">&raquo;</a>
+<div id="application">
+      
+<script>
+$(function(){
+	$(document).on('click','.slider-arrow.show',function(){
+	    $( ".slider-arrow, .panel" ).animate({
+          left: "+=300"
+		  }, 700, function() {
+            // Animation complete.
+          });
+		  $(this).html('&laquo;').removeClass('show').addClass('hide');
+    });
+	
+	$(document).on('click','.slider-arrow.hide',function(){
+	    $( ".slider-arrow, .panel" ).animate({
+          left: "-=300"
+		  }, 700, function() {
+            // Animation complete.
+          });
+		  $(this).html('&raquo;').removeClass('hide').addClass('show');
+    });
+});
+  $(function() {
+    var availableQuestionParts = [
+      "who",
+      "what",
+      "when",
+      "how",
+      "where",
+      "C++",
+      "Clojure",
+      "COBOL",
+      "ColdFusion",
+      "Erlang",
+      "Fortran",
+      "Groovy",
+      "Haskell",
+      "Java",
+      "JavaScript",
+      "Lisp",
+      "Perl",
+      "PHP",
+      "Python",
+      "Ruby",
+      "Scala",
+      "Scheme"
+    ];
+    $( "#question" ).autocomplete({
+      source: availableQuestionParts
+    });
+  });
+
+
+
+var width = window.innerWidth || document.documentElement.clientWidth|| document.body.clientWidth;
+var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+var viewBoxWidth=document.getElementById('application').offsetWidth;
+var viewBoxHeight=document.getElementById('application').offsetHeight;
+console.log(viewBoxWidth+" : "+viewBoxHeight);
+
+var   root;
+
+var force = d3.layout.force()
+    .linkDistance(80)
+    .charge(-220)
+    .gravity(.005)
+    .size([width, height])
+    .on("tick", tick);
+
+var svg = d3.select("#application").append("svg")
+	.attr("viewBox", "0 0 " + viewBoxWidth + " " + viewBoxHeight )
+    .attr("preserveAspectRatio", "xMidYMid meet")
+    .attr("width", width)
+    .attr("height", height);
+
+var link = svg.selectAll(".link"),
+    node = svg.selectAll(".node");
+
+d3.json("networkControl.json", function(error, json) {
+  if (error) throw error;
+
+  root = json;
+  update();
+});
+
+function update() {
+  var nodes = flatten(root);
+  var links = d3.layout.tree().links(nodes);
+  // Restart the force layout.
+  force
+      .nodes(nodes)
+      .links(links)
+      .start();
+
+  // Update links.
+  link = link.data(links, function(d) { return d.target.id; });
+  link.exit().remove();
+
+  link.enter().insert("line", ".node")
+      .attr("class", "link");
+
+  // Update nodes.
+  node = node.data(nodes, function(d) { return d.id; });
+
+  node.exit().remove();
+
+  var nodeEnter = node.enter().append("g")
+      .attr("class", "node")
+      .on("click", click)
+      .call(force.drag);
+
+  nodeEnter.append("rect")
+     .attr("rx", "3")
+     .attr("ry", "3")
+     .on('mouseover', function(d){displayApplicationProfile('applicationProfile',d);}) //AMC:For click-to-fade
+     .on('mouseout', function(d){hide('applicationProfile');}) //AMC:For click-to-fade
+     .attr("width", function(d) { d.radius=d.name.length/2+1; 
+			return d.radius+"em"; })
+      .attr("height", "22");
+/*
+  nodeEnter.append("circle")
+      .attr("r", function(d) { d.radius=Math.sqrt(d.size) || 4.5; 
+			console.log(d.radius); 
+			return d.radius; });
+*/
+  nodeEnter.append("text")
+	  .text(function(d) { return d.name; })
+      .attr("dy", ".95em")
+      .attr("dx", "1em")
+	  /*
+      .style("font-size", 
+		function(d) { console.log(this.getComputedTextLength());
+			//d.fontSize=(12*d.name.length)/this.getComputedTextLength()+"em"; //Math.min(2 * d.radius, (2 * d.radius - 8) / this.getComputedTextLength() * 24) + "px"; 
+			console.log(d.fontSize); 
+			return d.fontSize; })
+      */
+	  ;
+  node.append("title")
+	.text(function(d,event){return d.name+":"+d.radius;});
+
+  link.append("title")
+	.text(function(d,event){return d.relationship;});
+
+
+  node.select("text")
+	.style("font-size", function(d){return (d.level===0)?"1.5em":"1em";});
+  
+  node.select("rect")
+      .style("fill", color)
+	  ;
+}
+
+function tick() {
+  link.attr("x1", function(d) { return d.source.x+(16*d.source.radius/2); })
+      .attr("y1", function(d) { return d.source.y; })
+      .attr("x2", function(d) { return d.target.x+30; })
+      .attr("y2", function(d) { return d.target.y; });
+
+  node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+}
+
+function color(d) {
+var colorOfLeaf=(d.type=="person")?"#ff9999":"#dddddd";
+var colorOfExpandedPackage=(d.level!=undefined)?((d.level>0)?"#c6dbef":"#c6ffef"):"#c6dbef";
+
+	var color=d._children ? "#3182bd" // collapsed package
+      : d.children ? colorOfExpandedPackage // expanded package
+      : colorOfLeaf // leaf node
+  return color; 
+}
+
+// Toggle children on click.
+function click(d) {
+  if (d3.event.defaultPrevented) return; // ignore drag
+  if (d.children) {
+    d._children = d.children;
+    d.children = null;
+  } else {
+    d.children = d._children;
+    d._children = null;
+  }
+  update();
+}
+
+// Returns a list of all nodes under the root.
+function flatten(root) {
+  var nodes = [], i = 0;
+
+  function recurse(node) {
+    if (node.children) node.children.forEach(recurse);
+    if (!node.id) node.id = ++i;
+    nodes.push(node);
+  }
+
+  recurse(root);
+  return nodes;
+}
+
+
+//Function:Display application profile
+function displayApplicationProfile(div,d) {
+//Set the position of the div
+document.getElementById(div).style.top='0%';
+var left = width-$(".ontop").width();
+document.getElementById(div).style.left=left+"px";
+//Set the content of the msg to the created html text
+document.getElementById('popupTitle').innerHTML="<h3 class=\"appTitle\">"+d.name+"</h3>"+
+	((d.filename!=undefined)?"Filename: "+d.filename+"<br>":"")+
+	((d.year!=undefined)?"Year: "+d.year+"<br>":"")+
+	((d.author!=undefined)?"Authors: "+d.author+"<br>":"")
+	;
+
+//Set the content of the msg to the created html text
+document.getElementById('appDesc').innerHTML=""+
+	((d.keywords!=undefined)?"Keywords: "+d.keywords+"<br>":"")+
+	((d.description!=undefined)?d.description+"<br>":"")
+	;
+
+//Show the div
+document.getElementById(div).style.display = 'block';
+//Set the content of the msg to the created html text
+document.getElementById('msg').innerHTML=innerHTMLText;
+}
+
+//Hides a popup
+function hide(div) {
+	document.getElementById(div).style.display = 'none';
+}
+
+
+</script>
+<!-- Div/Placeholder to show the Application Profile Window -->
+<div id="applicationProfile" class="ontop">
+<table id="popup" border="0">
+	<tr>
+		<td style="padding-left:5px" width="80%" valign="top" align="left" id="popupTitle">
+		</td>
+		<td valign="top" align="right" style="padding:5px" >
+<img id="close" src="close-circle-512.png" width=20 height=20 onclick ="hide('applicationProfile')">
+		</td>
+	</tr>
+	<tr colspan=2>
+		<td style="padding-left:5px" width="100%" valign="top" align="left">
+			<p id="appDesc" class="appDesc" align="justify">abc</p>
+		</td>
+	</tr>
+</table>
+</div>
+</html>

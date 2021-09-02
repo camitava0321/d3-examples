@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<style>
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.box {
+  font: 10px sans-serif;
+}
+
+.box line,
+.box rect,
+.box circle {
+  fill: #fff;
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+.box .center {
+  stroke-dasharray: 3,3;
+}
+
+.box .outlier {
+  fill: none;
+  stroke: #ccc;
+}
+
+</style>
+<script src="../../d3.js"></script>
+<script src="box.js"></script>
+</head>
+<body>
+<h1>Box Plots</h1>
+<p>
+Box-and-whisker plot uses simple glyphs that summarize a quantitative distribution 
+with five standard statistics: 
+<ul>
+<li>the smallest value,</li>
+<li>lower quartile,</li>
+<li>median,</li>
+<li>upper quartile, and </li>
+<li>largest value.</li>
+</ul>
+This summary approach allows the viewer to easily recognize differences between distributions. 
+</p>
+<p>
+Data is from the Michelson–Morley experiment.<br> 
+This example periodically randomizes the values to demonstrate transitions.
+</p>
+
+<script>
+var margin = {top: 10, right: 50, bottom: 20, left: 50},
+    width = 120 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var min = Infinity,
+    max = -Infinity;
+
+/*var chart = d3.box()
+    .whiskers(iqr(1.5))
+    .width(width)
+    .height(height);
+*/
+d3.text("data.csv", function(error, csv) {
+  if (error) throw error;
+
+  var data = [];
+data=d3.csv.parseRows(csv);
+
+for (var i=0; i<data.length; i++) {
+  indexOf1stSpace = data[i].indexOf("");
+  console.log(indexOf1stSpace);
+  row = data[i];
+  if (indexOf1stSpace>-1) {
+	data[i].splice(indexOf1stSpace);
+	row = data[i];
+  }
+  
+  row = row.map(Number);
+  var dummy = Math.min.apply(null,row);
+  if (min > dummy) min=dummy;
+  dummy = Math.max.apply(null,row);
+  if (max < dummy) max=dummy;
+  
+  console.log(row);
+  
+  
+  
+}
+  console.log(min,max);
+
+
+});
+
+</script>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta author="Amitava Chakraborty"/>
+<link rel="stylesheet" type="text/css" href="styles.css"/>
+<script src="../d3.js"></script>
+<title>D3 Cookbook - Basics 02</title>
+	<style>
+	svg {
+		margin: 1em;
+		padding: 10px;
+		border-radius: 5px;
+	}
+	</style>
+</head>
+<body>
+<h1>D3 Cookbook</h1>
+<h2>Basics 01</h2>
+
+<button onclick="addACircle()">Click me</button> 
+<script>
+//Dynamically add SVG element
+d3.select("body").append("p")
+	.html("Dynamically add SVG elements");
+
+//Initial data	
+//We create a SVG container (The SVG Viewport)
+var svgContainer = d3.select("body").append("svg")
+					.attr("width",400)
+					.attr("height",400)
+					.style("border","1px dashed grey");
+
+//Data points for the visualisation; This dataPoints array is just dummy data being create at every resampling
+var dataPoints=[20,70,120,170,220,270,320,370];
+/*
+var dataPoints = [
+   { "cx": 20, "cy": 20, "radius": 20, "color" : 2 },
+   { "cx": 70, "cy": 20, "radius": 20, "color" : 4 },
+   { "cx": 120, "cy": 20, "radius": 20, "color" : 6 },
+   { "cx": 170, "cy": 20, "radius": 20, "color" : 8 },
+   { "cx": 20, "cy": 70, "radius": 20, "color" : 10 },
+   { "cx": 20, "cy": 120, "radius": 20, "color" : 12 }];
+*/
+var colors = ["#FFCCFF","#FFCCCC","#FFFFCC","#CCFFCC","#CCFFFF","#CCCCFF","#FF99FF","#FF99CC","#FF9999","#FFCC99",
+              "#FFFF99","#CCFF99","#99FF99","#99FFCC","#66FFFF","#66CCFF","#99CCFF","#CC99FF","#FF66FF","#FF9933","#66FF66","#0099FF"];
+//Function - executed with each resampling
+function update(data)
+{
+//perform new DATA join
+var circles = svgContainer.selectAll("circle")
+				.data(data)
+				;
+//Once a new circle is appended fix it's x co-ordinate				
+circles.enter().append("circle")
+	.attr("r", function(d){return 1+Math.floor(Math.random()*19);})
+	.style("fill",function(d) {return colors[Math.floor(Math.random()*20)];})
+				;
+//For every data update - modify cy,r and fill color
+circles				
+	.transition()
+				.attr("cx", function(d){return 15+Math.floor(Math.random()*350);})
+	.attr("cy", function(d){return 15+Math.floor(Math.random()*350);})
+	;
+//For dataPoints with less numbers - circles corresponding to the previous data should be removed	
+circles.exit()
+	.transition()
+	.attr("r",0)
+	.remove();				
+}				
+
+function resample()
+{
+var noOfDataPoints=1+Math.floor(Math.random()*19);  //At least 1 and Max 20
+console.log(noOfDataPoints);
+//Reset the array
+dataPoints=[];
+for(var i=0;i<noOfDataPoints;i++)
+{
+dataPoints[i]=i;
+}
+update(dataPoints);
+}
+
+//Call resample every 1 second
+setInterval(resample,1000);
+</script>	
+</body>
+</html>

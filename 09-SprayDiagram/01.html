@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spray Diagram 1.0</title>
+  <meta charset="utf-8" />
+<script src="../d3.min.js"></script>
+<style>
+body {
+    background-color: cornsilk;
+	font-size: 100%;
+	font-family: "verdana", verdana, sans-serif;
+}
+
+h1 {
+    color: royalblue;
+    text-align: center;
+	font-size: 2.5em;
+	font-variant: small-caps;
+}
+h2 {
+    color: royalblue;
+	font-size: 1.5em;
+}
+
+p {
+    font-size: 1em;
+}
+svg {
+	margin: 1em;
+	padding: 1em;
+	border-radius: 1em;
+}
+
+.link {
+  stroke: #fcfcfc;
+}
+
+.node text {
+  pointer-events: none;
+  font: 1em Calibri, Arial;
+}
+path.link {
+  fill: none;
+  stroke: #666;
+  stroke-width: 1.5px;
+}
+
+marker#licensing {
+  fill: green;
+}
+
+path.link.licensing {
+  stroke: green;
+}
+
+path.link.resolved {
+  stroke-dasharray: 0,2 1;
+}
+
+circle {
+  fill: #ccc;
+  stroke: #333;
+  stroke-width: 1.5px;
+}
+
+text {
+  font: .9em sans-serif;
+  pointer-events: none;
+}
+
+text.shadow {
+  stroke: #fff;
+  stroke-width: 3px;
+  stroke-opacity: .8;
+}
+</style>	
+</head>
+<body>
+<script>
+d3.select("body").append("h2")
+	.text("Spray Diagram");
+
+var width = window.innerWidth
+|| document.documentElement.clientWidth
+|| document.body.clientWidth;
+
+var height = window.innerHeight
+|| document.documentElement.clientHeight
+|| document.body.clientHeight;
+var rx = 25, ry=18
+    gravity = 0.1,
+    distance = 100,
+    charge = -800,
+    fill = d3.scale.category10(),
+
+// these are the quantities
+// the groups are
+// 1: essential axiomatic units m, l, t
+// 2: related to movement
+// 3: related to energy
+// 4: related to a single unit
+    nodes=[
+        {name:"Data Visualisation", topicType:"Main Topic", symbol:"M", unit:"Data Visualisation", group:1,rx:40, ry:30}, 
+        {name:"Data Visualisation", topicType: "Sub Topic 1", symbol:"S1", unit:"s", group:2,rx:30, ry:20}, 
+        {name:"Data Visualisation", topicType:"Sub Topic 2", symbol:"S2", unit:"m", group:2,rx:30, ry:20}, 
+        {name:"Data Visualisation", topicType:"Sub Topic 3", symbol:"S3", unit:"N", group:2, formula:"F=m.a",rx:30, ry:20}, 
+        {name:"Data Visualisation", topicType:"Topic 1.1", symbol:"T1.1", unit:"m/s", group:3, formula:"v=d/t",rx:25, ry:15}, 
+        {name:"Data Visualisation", topicType:"Topic 1.2", symbol:"T1.2", unit:"m/(s.s)", group:3, formula:"a=v/d",rx:25, ry:15}, 
+        {name:"Data Visualisation", topicType:"Topic 1.3", symbol:"T1.3", unit:"J", group:3, formula:"W=F.d",rx:25, ry:15}, 
+        {name:"Data Visualisation", topicType:"Topic 2.1", symbol:"T2.1", unit:"kg.m/s", group:3, formula:"p=m.v",rx:25, ry:15}, 
+        {name:"Data Visualisation", topicType:"Topic 2.2", symbol:"T2.2", unit:"N.s", group:3, formula:"I=F.t",rx:25, ry:15}, 
+        {name:"Data Visualisation", topicType:"Topic 2.3", symbol:"T2.3", unit:"J", group:3, formula:"Ek=0.5m.v.v",rx:25, ry:15}, 
+        {name:"Data Visualisation", topicType:"Topic 3.1", symbol:"T3.1", unit:"W", group:3, formula:"P=W/t",rx:25, ry:15}, 
+        {name:"Data Visualisation", topicType:"Topic 3.2", symbol:"T3.2", unit:"Pa", group:3, formula:"p=F/A",rx:25, ry:15}, 
+        {name:"Data Visualisation", topicType:"Topic 3.3", symbol:"T3.3", unit:"m.m", group:3, formula:"A=d*d",rx:25, ry:15}, 
+        {name:"Data Visualisation", topicType:"Topic 3.4", symbol:"T3.4", unit:"m.m.m", group: 3, formula:"V=A*d",rx:25, ry:15}, 
+        {name:"Data Visualisation", topicType:"Topic 3.5", symbol:"T3.5", unit:"Hz", group:3, formula:"f=1/t",rx:25, ry:15}
+        ],
+
+    // the relations shown can be calculated using
+    // formulas from either 1 or 2 other quantities
+    links=[
+        {"source":0,"target":3,"value":1}, 
+        {"source":2,"target":7,"value":1}, {"source":3,"target":13,"value":1}, // acceleration
+        {"source":0,"target":1,"value":1}, {"source":3,"target":14,"value":1}, // force
+        {"source":3,"target":11,"value":1}, // momentum
+        {"source":2,"target":8,"value":1}, {"source":3,"target":12,"value":1}, // work
+        {"source":0,"target":2,"value":1}, 
+        {"source":2,"target":9,"value":1}, // area 
+        {"source":1,"target":4,"value":1}, 
+        {"source":3,"target":10,"value":1}, {"source":1,"target":6,"value":1}, // impulse
+        {"source":1,"target":5,"value":1}
+    ];
+
+// create the canvas for the model
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+// d3 provides the calculations to animate the model
+var force = d3.layout.force()
+    .gravity(gravity)
+    .distance(distance)
+    .charge(charge)
+    .size([width, height]);
+
+// add data, and start the animation
+force.nodes(nodes)
+    .links(links)
+    .start();
+
+// add classnames to links for styling
+var link = svg.selectAll(".link")
+    .data(links)
+    .enter().append("line")
+    .attr("class", "link");
+
+// enable drag of nodes
+var node = svg.selectAll(".node")
+    .data(nodes)
+    .enter().append("g")
+    .attr("class", "node")
+    .call(force.drag);
+
+// draw circles
+var circle=node.append("svg:ellipse")
+	.attr("rx", function(d){return d.rx;})
+	.attr("ry", function(d){return d.ry;})
+	.style("fill", function(d) {
+        return fill(d.group);
+    })
+	.style("stroke", function(d) {
+        return d3.rgb(fill(d.group)).darker();
+    })
+	.call(force.drag);
+
+// add tooltip so it shows the unit and formula
+circle.append("svg:title")
+	.text(function(d, i) { return "Unit: " + d.unit + ", Formula: " + d.formula; });
+
+
+// create arrowheads (end markers)
+// three type of styles can be made for each group
+// this feature is not used
+svg.append("svg:defs").selectAll("marker")
+    .data([1,2,3])
+  .enter().append("svg:marker")
+    .attr("id", String)
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 22)
+    .attr("refY", -1.5)
+    .attr("markerWidth", 6)
+    .attr("markerHeight", 6)
+    .attr("fill-color","#cccccc")
+    .attr("orient", "auto")
+  .append("svg:path")
+    .attr("d", "M0,-5L10,0L0,5");
+
+// attach markers
+var path = svg.append("svg:g").selectAll("path")
+    .data(force.links())
+    .enter().append("svg:path")
+    .attr("class", function(d) { return "link " + d.value; })
+    .attr("marker-end", function(d) { return "url(#" + d.value + ")"; });
+
+// create a group for text elements
+var text = svg.append("svg:g").selectAll("g")
+    .data(force.nodes())
+    .enter().append("svg:g");
+
+// create shadow in white
+text.append("svg:text")
+      .attr("dx", function(d){return d.rx;})
+      .attr("dy", ".35em")
+      .attr("class", "shadow")
+      .text(function(d) { return d.topicType;});
+
+// create name on top of shadow
+text.append("svg:text")
+      .attr("dx", function(d){console.log(d.rx);return d.rx;})
+      .attr("dy", ".35em")
+      .text(function(d) { return d.topicType;}
+  );
+
+// put the symbol, e.g. kg inside the circle
+text.append("svg:text")
+      .attr("dx", function(d){return -d.rx;})
+      .attr("dy", 0)
+      .attr("fill", "#ffffff")
+      .text(function(d) { return d.name;}
+  );
+
+force.on("tick", tick);
+
+// move circles using force
+function tick() {
+  path.attr("d", function(d) {
+    var dx = d.target.x - d.source.x,
+        dy = d.target.y - d.source.y,
+        dr = 0; // straight lines (0=straight, 1=round)
+        // alternatively use dr = Math.sqrt(dx * dx + dy * dy); for similar arcs
+    return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+  });
+
+  circle.attr("transform", function(d) {
+    return "translate(" + d.x + "," + d.y + ")";
+  });
+
+  text.attr("transform", function(d) {
+    return "translate(" + d.x + "," + d.y + ")";
+  });
+}
+
+// when clicked redraw the diagram
+d3.select("body").on("click", function() {
+  nodes.forEach(function(o, i) {
+    o.x += (Math.random() - .5) * 100;
+    o.y += (Math.random() - .5) * 100;
+  });
+  force.resume();
+});
+</script>
+<body>
+</body>
+</html>

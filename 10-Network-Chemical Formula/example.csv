@@ -1,0 +1,11 @@
+id,name,name,type,related,reltype
+0,Amitava,,M,1,spouse
+Amitava,Amitava,Niharika,daughter,,daughter
+Amitava,Amitava,Bimal,father,,father
+Amitava,Amitava,Bithika,mother,,mother
+Bimal,Bimal,Bithika,spouse,,spouse
+Bimal,Bimal,Arunavaa,daughter,,daughter
+1,Chayanika,,F,,
+2,Niharika,,,,
+3,Bimal,,,,
+4,Bithika,,,,

@@ -1,0 +1,51 @@
+id,name,type,description
+0,WCS,WDC,Watson Conversation Service
+1,WDS,WDC,Watson Discovery Service
+2,WLT,WDC,Watson Language Translator
+3,WNLC,WDC,Watson Natural Language Classifier
+4,NLU,WDC,Watson Natural Language Understanding
+5,WPI,WDC,Watson Personality Insights
+6,WSTT,WDC,Watson Speech To Text
+7,WTTS,WDC,Watson Text To Speech
+8,WTA,WDC,Watson Tone Analyzer
+9,WVR,WDC,Watson Visual Recognition
+10,WKS,WKS,Watson Knowledge Service
+11,User,User,End User
+12,IVR,Channel,IVR
+13,VI,Service,Voice Intent Extractor
+14,TI,Service,Text Intent Extractor
+15,Web,Channel,Web Channel
+16,Orchestrator,Platform Service,Orchestrator
+17,TAN,Service,Text Annotator
+18,SU,Service,Speech To User
+19,TS,Platform Service,Text Related Services
+20,IS,Platform Service,Image Related Services
+21,Mobile,Channel,Mobile Channel
+22,Training,Service,Training Macro Service
+23,Tagnt,User,Training Agent
+24,GCS,Service,Generic Conversation/Bot Service
+25,GDS,Service,Generic Data Ingestion and NLSearch Service
+26,GLT,Service,Generic Language Trnslator
+27,GNLC,Service,Generic Natural Language Classifier
+28,GNER,Service,Generic Named Entity Recognition
+29,GKext,Service,Generic Keyword Extractor
+30,GSext,Service,Generic Sentiment Extractor
+31,GPI,Service,Generic Personality Insights
+32,GSTT,Service,Generic Speech To Text
+33,GTTS,Service,Generic Text To Speech
+34,GTA,Service,Generic Tone Analyzer
+35,GVR,Service,Generic Visual Recognition
+36,SpaCy,3rd Party,SpaCy:  open-source software library for advanced Natural Language Processing
+37,GATE,3rd Party,General Architecture for Text Engineering
+38,OpenNLP,3rd Party,OpenNLP : Apache NLP APIs
+39,STNLP,3rd Party,Stanford Named Entity Recognizer
+40,Baleen,3rd Party,Extensible text processing capability - Java8
+41,CogComp,3rd Party,CogComp NER Tagger
+42,PDOTS,3rd Party,ParallelDots AI API
+43,LUIS,3rd Party,Microsoft LUIS - Language Understanding Intelligent Service
+44,Wit.AI,3rd Party,Wit.ai - Facebook
+45,Recast.ai,3rd Party,Recast.ai - Facebook - enterprise version
+46,Api.ai,3rd Party,Api.ai
+47,Clarifi,3rd Party,Clarifi
+48,CVAPI,3rd Party,Cloud Vision API
+49,AR,3rd Party,Amazon Rekognition

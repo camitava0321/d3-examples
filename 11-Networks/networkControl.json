@@ -1,0 +1,368 @@
+{
+    "level": 0,
+    "name": "Network Control",
+    "size": 300,
+    "description": "Ability to guide a dynamical system from any initial state to any desired final state in finite time, with a suitable choice of inputs.",
+    "children": [
+        {
+            "level": "1",
+            "description": "Whether the lack of controllability or observability are generic w.r.t the variable system parameters. In this framework the system parameters are either independent free variables or fixed zeros. This is consistent for models of physical systems since parameter values are never known exactly (with the exception of zero values which express the absence of interactions or connections). First introduced by Lin (1974) then extended by Shields and Pearson (1976). Alternatively derived by Glover and Silverman (1976).",
+            "name": "Structural Controllability",
+            "children": [
+                {
+                    "level": 2,
+                    "name": "People",
+                    "children": [
+                        {
+                            "name": "Lin 1974",
+                            "type": "person"
+                        },
+                        {
+                            "name": "Shields and Pearson (1976)",
+                            "type": "person"
+                        },
+                        {
+                            "name": "Glover and Silverman (1976)",
+                            "type": "person"
+                        }
+                    ]
+                },
+                {
+                    "level": 2,
+                    "name": "Characteristics",
+                    "children": [
+                        {
+                            "name": "directed networks with structural matrices",
+                            "relationship": "applicable to"
+                        },
+                        {
+                            "name": "<charac002>",
+                            "relationship": "<...>"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": "1",
+            "name": "Pinning Control",
+            "description": "A feedback control strategy for synchronization and consensus of complex dynamical networks. <br>Specifically, a virtual leader (the pinner) is added to the network and defines its desired trajectory. The pinner directly controls only a small fraction of the network nodes (the pinned nodes)- by exerting a control action that is a function of the pinning error vector - whose i-th component is given by the difference between the output of the pinner and the output of the i-the node",
+            "children": [
+                {
+                    "name": "People",
+                    "level": 2,
+                    "children": [
+                        {
+                            "level": "1.1",
+                            "name": "Wang and Chen 2002",
+                            "type": "person"
+                        },
+                        {
+                            "level": "1.2",
+                            "name": "Sorrentino et al. (2007)",
+                            "type": "person"
+                        },
+                        {
+                            "level": "1.3",
+                            "name": "Chen, Liu and Lu (2007)",
+                            "type": "person"
+                        }
+                    ]
+                },
+                {
+                    "name": "Characteristics",
+                    "level": 2,
+                    "children": [
+                        {
+                            "level": 1.5,
+                            "name": "...",
+                            "relationship": "..."
+                        }
+                    ]
+                },
+                {
+                    "name": "Strategies",
+                    "level": 2,
+                    "children": [
+                        {
+                            "level": 1.5,
+                            "name": "Adaptation of coupling and control gains",
+                            "relationship": "applicable to"
+                        },
+                        {
+                            "level": 1.5,
+                            "name": "Pinning control via network evolution",
+                            "relationship": "<...>"
+                        }
+                    ]
+                },
+                {
+                    "name": "Examples",
+                    "level": 2,
+                    "children": [
+                        {
+                            "level": 1.5,
+                            "name": "Decentralized adaptive pinning control",
+                            "description": "Proposed by DeLellis- Bernardo and Turci (2010) - both the control and coupling gains are independently and adaptively estimated on-line. <br>The effectiveness of this approach in controlling a complex network of 30 Chua's circuits coupled through an Erdös-Rènyi random network.",
+                            "relationship": "applicable to"
+                        },
+                        {
+                            "level": 1.5,
+                            "name": "Pinning edge snapping",
+                            "description": "fully decentralized snapping control presented by DeLellis- Bernardo and Porfiri (2011) - where the coupling and control gains are adapted and the network and control edges are activated according to the edge snapping mechanisms",
+                            "relationship": "<...>"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": "1",
+            "description": "claims that for arbitrary network topology and link weights characterized by a state matrix A in canonical linear time-invariant systems - the minimum number of driver nodes required to be controlled by imposing independent signals to fully control the system is given by the maximum geometric multiplicity of A’s eigenvalues. Calculating all the eigenvalues of A and subsequently counting their geometric multiplicities are generally applicable but computationally prohibitive for large networks. If A is symmetric-e.g-in undirected networks- ND is simply given by the maximum algebraic multiplicity. Calculating ND in the case of symmetric A is more computationally affordable than in the asymmetric case. Note that for structured systems where the elements in A are either fixed zeros or free independent parameters - ECT offers the same results as that of the SCT.",
+            "name": "Exact-Controllability Theory ECT",
+            "children": [
+                {
+                    "name": "Characteristics",
+                    "level": 2,
+                    "children": [
+                        {
+                            "name": "Min # of Driver Nodes",
+                            "description": "the maximum geometric multiplicity of A’s eigenvalues. If A is symmetric-e.g-in undirected networks- ND is equal to the maximum algebraic multiplicity. "
+                        },
+                        {
+                            "name": "CommunityStructure",
+                            "size": 381
+                        },
+                        {
+                            "name": "HierarchicalCluster",
+                            "size": 671
+                        },
+                        {
+                            "name": "MergeEdge",
+                            "size": 74
+                        }
+                    ]
+                },
+                {
+                    "name": "graph",
+                    "level": 2,
+                    "children": [
+                        {
+                            "name": "BetweennessCentrality",
+                            "size": 353
+                        },
+                        {
+                            "name": "LinkDistance",
+                            "size": 573
+                        },
+                        {
+                            "name": "MaxFlowMinCut",
+                            "size": 784
+                        },
+                        {
+                            "name": "ShortestPaths",
+                            "size": 591
+                        },
+                        {
+                            "name": "SpanningTree",
+                            "size": 341
+                        }
+                    ]
+                },
+                {
+                    "name": "optimization",
+                    "level": 2,
+                    "children": [
+                        {
+                            "name": "AspectRatioBanker",
+                            "size": 707
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": "1",
+            "name": "Maximum Matching",
+			"description": "In graph theory, a matching is a set of edges without common vertices. <br>Liu et al.[1] extended this definition to directed graph, where a matching is a set of directed edges that do not share start or end vertices. A matching of a directed graph composes of a set of vertex-disjoint simple paths and cycles. The maximum matching of a directed network can be calculated by working in the bipartite representation using the classical Hopcroft–Karp algorithm, which runs in O(E√N) time in the worst case. For undirected graph, analytical solutions of the size and number of maximum matchings have been studied using the cavity method developed in statistical physics.[6] <br>By calculating the maximum matchings of a wide range of real networks, Liu et al.[1] asserted that the number of driver nodes is determined mainly by the networks degree distribution P(K<sub>in</sub>,K<sub>out</sub>). They also calculated the average number of driver nodes for a network ensemble with arbitrary degree distribution using the cavity method. For a chain graph and a weak densely connected graph, both of which have very different in and out degree distributions; the formulation of Liu et al.[1] would predict same values of n<sub>D</sub><sup>real</sup> and n<sub>D</sub><sup>rand_degree</sup>. Also, for many real-word networks, namely, food webs, neuronal and metabolic networks, the mismatch in values of  and  calculated by Liu et al.[1] is notable. <br>If controllability is decided purely by degree, why are  and  so different for many real world networks? It remains open to scrutiny whether control robustness\" in networks is influenced more by using betweenness centrality and closeness centrality[2] over degree (graph theory) based metrics. While sparser graphs are more difficult to control,[1][2] it would obviously be interesting to find whether betweenness centrality and closeness centrality[2] or degree heterogeneity[1] plays a more important role in deciding controllability of sparse graphs with almost similar degree distributions.",
+            "children": [
+                {
+                    "name": "cluster",
+                    "level": 2,
+                    "description": "",
+                    "children": [
+                        {
+                            "name": "AgglomerativeCluster",
+                            "size": 393
+                        },
+                        {
+                            "name": "CommunityStructure",
+                            "size": 381
+                        },
+                        {
+                            "name": "HierarchicalCluster",
+                            "size": 671
+                        },
+                        {
+                            "name": "MergeEdge",
+                            "size": 74
+                        }
+                    ]
+                },
+                {
+                    "name": "graph",
+                    "level": 2,
+                    "children": [
+                        {
+                            "name": "BetweennessCentrality",
+                            "size": 353
+                        },
+                        {
+                            "name": "LinkDistance",
+                            "size": 573
+                        },
+                        {
+                            "name": "MaxFlowMinCut",
+                            "size": 784
+                        },
+                        {
+                            "name": "ShortestPaths",
+                            "size": 591
+                        },
+                        {
+                            "name": "SpanningTree",
+                            "size": 341
+                        }
+                    ]
+                },
+                {
+                    "name": "optimization",
+                    "level": 2,
+                    "children": [
+                        {
+                            "name": "AspectRatioBanker",
+                            "size": 707
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": "1",
+            "name": "Papers",
+            "children": [
+                {
+                    "name": "Universal Symmetry in Complex Network Control",
+                    "filename": "2014-arXiv-Mar-Zhao.pdf",
+                    "level": 3,
+                    "year": 2014,
+                    "author": "Chen Zhao, Wen-Xu Wang, Yang-Yu Liu, and Jean-Jacques Slotine",
+                    "keywords": "framework",
+                    "children": [
+                        {
+                            "name": "Sections",
+                            "children": [
+                                {
+                                    "name": "Abstract",
+                                    "description": "a theoretical framework to evaluate the controllability of complex networked systems with diversity of dynamic units (different types of individual dynamics). We find a universal symmetry accounting for the invariance of controllability with respect to exchanging the densities of any two different types of dynamic units, irrespective of the network topology. The highest controllability arises at the global symmetry point, at which different types of dynamic units have the same density. These findings have important implications for devising effective and sparse controllers of complex networked systems in a wide range of fields."
+                                },
+                                {
+                                    "name": "Conclusion",
+                                    "description": "We map individual dynamics into dynamic units -> integrated into the matrix representation of the system<br> to explore the joint effect of individual dynamics and network topology on the system’s controllability. We discovered that the universal symmetry of controllability as reflected by the invariance of controllability with respect to exchanging the fractions of any two different types of individual dynamics and the emergence of highest controllability at the global symmetry point. <br>These findings generally hold for arbitrary networks and individual dynamics of any order. The symmetry induced highest controllability has immediate implications for devising and optimizing the control of complex systems by for example, perturbing individual dynamics to approach the symmetry point without the need to adjust network structure. The theoretical paradigm and tools developed here also allow us to address a number of questions - answers to which could offer further insights into the control of complex networked systems. <br>For example, similar individuals are often accompanied by dense inner connections among them - accounting for the widely observed communities with relatively sparse connections among them in natural and social systems. How such structural property in combination with the similarity and diversity of individual dynamics impacts control is worthy of exploration. Despite the advantage of our tools compared to the other methods in literature - the network systems thatwe can address are still the tip of the iceberg, raising the need of new tools based on network science - statistic physics and control theory. At the present - we are incapable of tackling general nonlinear dynamical systems, which is extremely challenging not only in complex networks but also in the canonical control theory for simple systems. Nevertheless our approach - we hope - will inspire further interest from physicists and other scientists towards achieving ultimate control of complex networked systems."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "filename": "2013-SIAM J CONTROL OPTIM-Feb-Yu.pdf",
+                    "level": "1.421",
+                    "year": 2013,
+                    "author": "WENWU YU, GUANRONG CHEN, JINHU LU, AND JURGEN KURTHS",
+                    "name": "SYNCHRONIZATION VIA PINNING CONTROL ON GENERAL COMPLEX NETWORKS",
+                    "children": [
+                        {
+                            "name": "Sections",
+                            "children": [
+                                {
+                                    "name": "Abstract",
+                                    "description": "This paper studies synchronization via pinning control on general complex dynamical networks, such as strongly connected networks, networks with a directed spanning tree, weakly connected networks, and directed forests. A criterion for ensuring network synchronization on strongly connected networks is given. It is found that the vertices with very small in-degrees should be pinned first. In addition, it is shown that the original condition with controllers can be reformulated such that it does not depend on the form of the chosen controllers, which implies that the vertices with very large out-degrees may be pinned. Then, a criterion for achieving synchronization on networks with a directed spanning tree, which can be composed of many strongly connected components, is derived. It is found that the strongly connected components with very few connections from other components should be controlled and the components with many connections from other components can achieve synchronization even without controls. Moreover, a simple but effective pinning algorithm for reaching synchronization on a general complex dynamical network is proposed. Finally, some simulation examples are given to verify the proposed pinning scheme."
+                                },
+                                {
+                                    "name": "Conclusion",
+                                    "description": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "filename": "2013-Protocl exchange-Motter.pdf",
+                    "level": "1.421",
+                    "year": 2013,
+                    "author": "Sean P. Cornelius, Adilson E. Motter",
+                    "name": "NECO - A scalable algorithm for NEtwork COntrol",
+                    "children": [
+                        {
+                            "name": "Sections",
+                            "children": [
+                                {
+                                    "name": "Abstract",
+                                    "description": "We present an algorithm for the control of complex networks and other nonlinear, high-dimensional dynamical systems. The computational approach is based on the recently-introduced concept of compensatory perturbations—intentional alterations to the state of a complex system that can drive it to a desired target state even when there are constraints on the perturbations that forbid reaching the target state directly. Included here is ready-to-use software that can be applied to identify eligible control interventions in a general system described by coupled ordinary differential equations, whose specific form can be specified by the user. The algorithm is highly scalable, with the computational cost scaling as the number of dynamical variables to the power 2.5."
+                                },
+                                {
+                                    "name": "Conclusion",
+                                    "description": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "filename": "2013-Pramana-apr-liang.pdf",
+                    "level": "1.421",
+                    "year": 2013,
+                    "author": "YI LIANG1, and XINGYUAN WANG",
+                    "name": "Synchronizability on complex networks via pinning control",
+                    "children": [
+                        {
+                            "name": "Sections",
+                            "children": [
+                                {
+                                    "name": "Abstract",
+                                    "description": "It is proved that the maximum eigenvalue sequence of the principal submatrices of coupling matrix is decreasing. The method of calculating the number of pinning nodes is given based on this theory. The findings reveal the relationship between the decreasing speed of maximum eigenvalue sequence of the principal submatrices for coupling matrix and the synchronizability on complex networks via pinning control. We discuss the synchronizability on some networks, uch as scale-free networks and small-world networks. Numerical simulations show that different pinning strategies have different pinning synchronizability on the same complex network, and the synchronizability with pinning control is consistent with one without pinning control in various complex networks."
+                                },
+                                {
+                                    "name": "Conclusion",
+                                    "description": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "filename": "2013-Phys Rev-Sep-Motter.pdf",
+                    "level": "1.421",
+                    "year": 2013,
+                    "author": "Jie Sun and Adilson E. Motter",
+                    "name": "Controllability transition and nonlocality in network control",
+                    "children": [
+                        {
+                            "name": "Sections",
+                            "children": [
+                                {
+                                    "name": "Abstract",
+                                    "description": "A common goal in the control of a large network is to minimize the number of driver nodes or control inputs.Yet, the physical determination of control signals and the properties of the resulting control trajectories remain widely under-explored. Here we show that: (i) numerical control fails in practice even for linear systems if the controllability Gramian is ill-conditioned, which occurs frequently even when existing controllability criteria are satisfied unambiguously; (ii) the control trajectories are generally nonlocal in the phase space, and their lengths are strongly anti-correlated with the numerical success rate and number of control inputs; (iii) numerical success rate increases abruptly from zero to nearly one as the number of control inputs is increased, a transformation we term numerical controllability transition. This reveals a trade-off between nonlocality of the control trajectory in the phase space and nonlocality of the control inputs in the network itself. The failure of numerical control cannot be overcome in general by merely increasing numerical precision—successful control requires instead increasing the number of control inputs beyond the numerical controllability transition."
+                                },
+                                {
+                                    "name": "Conclusion",
+                                    "description": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

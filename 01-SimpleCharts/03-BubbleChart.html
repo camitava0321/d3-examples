@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta author="Amitava Chakraborty"/>
+<link rel="stylesheet" type="text/css" href="styles.css"/>
+<script src="../d3.v4.js"></script>
+<style>
+
+text {
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+
+</style>
+<title>Bubble Chart - Size Of Planets</title>
+</head>
+
+<body>
+<h1>D3 Practice</h1>
+<h2>Bubble Chart - Size Of Planets</h2>
+<div class="chart"></div>
+<body>
+<svg width="1000" height="800"></svg>
+
+<script>
+//Set Margin, width and height
+var margin = {top: 20, right: 20, bottom: 20, left: 20},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var svg = d3.select("svg");
+var format = d3.format(",d");
+
+var color = d3.scaleOrdinal(d3.schemeCategory20c);
+
+var pack = d3.pack()
+    .size([width, height])
+    .padding(1.5);
+
+d3.csv("satellites.csv", 
+	function(d) {
+  		d.value = +d.value;
+  		if (d.value) 
+  			return d;
+	}, 
+	function(error, classes) {
+  		if (error) 
+  			throw error;
+		var root = d3.hierarchy({children: classes})
+      					.sum(function(d) { return d.value; })
+      					.each(function(d) {
+        					if (id = d.data.id) {
+          						var id, i = id.lastIndexOf(".");
+          						d.id = id;
+          						d.package = id.slice(0, i);
+          						d.class = id.slice(i + 1);
+     						}
+     					});
+	 
+	 	var data=pack(root).leaves();
+	  
+		var node = svg.selectAll(".node")
+		    .data(data)
+		    .enter().append("g")
+		      .attr("class", "node")
+		      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+		
+		node.append("circle")
+		      .attr("id", function(d) { return d.id; })
+		      .attr("r", function(d) { return d.r; })
+		      .style("fill", function(d) { return color(d.package); });
+		
+		node.append("clipPath")
+		      .attr("id", function(d) { return "clip-" + d.id; })
+		    .append("use")
+		      .attr("xlink:href", function(d) { return "#" + d.id; });
+		
+		node.append("text")
+		      .attr("clip-path", function(d) { return "url(#clip-" + d.id + ")"; })
+		    .selectAll("tspan")
+		    .data(function(d) { return d.class.split(/(?=[A-Z][^A-Z])/g); })
+		    .enter().append("tspan")
+		      .attr("x", 0)
+		      .attr("y", function(d, i, nodes) { return 13 + (i - nodes.length / 2 - 0.5) * 10; })
+		      .text(function(d) { return d; });
+		
+		node.append("title")
+		      .text(function(d) { return d.id + "\n" + format(d.value); });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+	body {
+		font-size: 100%;
+		font-family: "verdana", verdana, sans-serif;
+	}
+
+h1 {
+  font: 2.5em sans-serif;
+  font-variant: small-caps;
+  background-color: #aed7ff;
+  text-align: left;
+  padding: 5px;
+  margin: 1px;
+  color: #0000cc;
+}
+h2 {
+  font: 1.5em sans-serif;
+  background-color: #aed7ff;
+  text-align: left;
+  padding: 5px;
+  margin: 1px;
+  color: #0000cc;
+}
+p {
+	font-size: 1em;
+}
+
+.ghost {
+  font: 0.5em sans-serif;
+  background-color: #7c7c7c;
+  text-align: left;
+  padding: 5px;
+  margin: 1px;
+  color: #ffffff;
+}
+.chart div {
+  font: 10px sans-serif;
+  background-color: #550055;
+  text-align: right;
+  padding: 3px;
+  margin: 1px;
+  color: white;
+}
+
+.svgBars rect {
+  fill: #550055;
+}
+
+.svgBars text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: end;
+}
+.svgFileBars rect {
+  fill: #550055;
+}
+
+.svgFileBars text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: end;
+}
+
+.svgCols rect {
+  fill: #550055;
+}
+
+.svgCols text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: end;
+}
+
+.svgFileCols rect {
+  fill: #550055;
+}
+
+.svgFileCols text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: end;
+}
+
+
+#comments {
+  color: #008080;
+}
+
+div.ibm {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 100px;
+}
+div.amc {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100px;
+}

@@ -1,0 +1,763 @@
+{
+"devices": [
+{
+"id": 1,
+"name": "Hub0",
+"typeOfDevice": "Hub",
+"deviceDescription": "Hub",
+"maxConnections": "10",
+"canConnect": "[N/A]"
+},
+{
+"id": 2,
+"name": "Hub1",
+"typeOfDevice": "Hub",
+"deviceDescription": "Hub",
+"maxConnections": "10",
+"canConnect": "[N/A]"
+},
+{
+"id": 3,
+"name": "Macro0",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 4,
+"name": "Macro1",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 5,
+"name": "Macro2",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 6,
+"name": "Macro3",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 7,
+"name": "Macro4",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 8,
+"name": "Macro5",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 9,
+"name": "Macro6",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 10,
+"name": "Macro7",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 11,
+"name": "Macro8",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 12,
+"name": "Macro9",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 13,
+"name": "Macro10",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 14,
+"name": "Macro11",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 15,
+"name": "Macro12",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 16,
+"name": "Macro13",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 17,
+"name": "Macro14",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 18,
+"name": "Macro15",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 19,
+"name": "Macro16",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 20,
+"name": "Macro17",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 21,
+"name": "Macro18",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 22,
+"name": "Macro19",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 23,
+"name": "Macro20",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 24,
+"name": "Macro21",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 25,
+"name": "Macro22",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 26,
+"name": "Macro23",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 27,
+"name": "Macro24",
+"typeOfDevice": "Macro",
+"deviceDescription": "Macro Cell",
+"maxConnections": "5",
+"canConnect": "[Hub]"
+},
+{
+"id": 28,
+"name": "Micro0",
+"typeOfDevice": "Micro",
+"deviceDescription": "Micro Cell",
+"maxConnections": "3",
+"canConnect": "[Macro]"
+},
+{
+"id": 29,
+"name": "Micro1",
+"typeOfDevice": "Micro",
+"deviceDescription": "Micro Cell",
+"maxConnections": "3",
+"canConnect": "[Macro]"
+},
+{
+"id": 30,
+"name": "Micro2",
+"typeOfDevice": "Micro",
+"deviceDescription": "Micro Cell",
+"maxConnections": "3",
+"canConnect": "[Macro]"
+},
+{
+"id": 31,
+"name": "Micro3",
+"typeOfDevice": "Micro",
+"deviceDescription": "Micro Cell",
+"maxConnections": "3",
+"canConnect": "[Macro]"
+},
+{
+"id": 32,
+"name": "Nano0",
+"typeOfDevice": "Nano",
+"deviceDescription": "Nano Cell",
+"maxConnections": "2",
+"canConnect": "[ Macro, Micro]"
+},
+{
+"id": 33,
+"name": "Nano1",
+"typeOfDevice": "Nano",
+"deviceDescription": "Nano Cell",
+"maxConnections": "2",
+"canConnect": "[ Macro, Micro]"
+},
+{
+"id": 34,
+"name": "Nano2",
+"typeOfDevice": "Nano",
+"deviceDescription": "Nano Cell",
+"maxConnections": "2",
+"canConnect": "[ Macro, Micro]"
+},
+{
+"id": 35,
+"name": "Nano3",
+"typeOfDevice": "Nano",
+"deviceDescription": "Nano Cell",
+"maxConnections": "2",
+"canConnect": "[ Macro, Micro]"
+},
+{
+"id": 36,
+"name": "Nano4",
+"typeOfDevice": "Nano",
+"deviceDescription": "Nano Cell",
+"maxConnections": "2",
+"canConnect": "[ Macro, Micro]"
+},
+{
+"id": 37,
+"name": "Pico0",
+"typeOfDevice": "Pico",
+"deviceDescription": "Pico Cell",
+"maxConnections": "3",
+"canConnect": "[Nano, Pico]"
+},
+{
+"id": 38,
+"name": "Pico1",
+"typeOfDevice": "Pico",
+"deviceDescription": "Pico Cell",
+"maxConnections": "3",
+"canConnect": "[Nano, Pico]"
+},
+{
+"id": 39,
+"name": "Pico2",
+"typeOfDevice": "Pico",
+"deviceDescription": "Pico Cell",
+"maxConnections": "3",
+"canConnect": "[Nano, Pico]"
+},
+{
+"id": 40,
+"name": "Pico3",
+"typeOfDevice": "Pico",
+"deviceDescription": "Pico Cell",
+"maxConnections": "3",
+"canConnect": "[Nano, Pico]"
+},
+{
+"id": 41,
+"name": "Pico4",
+"typeOfDevice": "Pico",
+"deviceDescription": "Pico Cell",
+"maxConnections": "3",
+"canConnect": "[Nano, Pico]"
+},
+{
+"id": 42,
+"name": "Pico5",
+"typeOfDevice": "Pico",
+"deviceDescription": "Pico Cell",
+"maxConnections": "3",
+"canConnect": "[Nano, Pico]"
+},
+{
+"id": 43,
+"name": "Pico6",
+"typeOfDevice": "Pico",
+"deviceDescription": "Pico Cell",
+"maxConnections": "3",
+"canConnect": "[Nano, Pico]"
+},
+{
+"id": 44,
+"name": "Pico7",
+"typeOfDevice": "Pico",
+"deviceDescription": "Pico Cell",
+"maxConnections": "3",
+"canConnect": "[Nano, Pico]"
+},
+{
+"id": 45,
+"name": "Pico8",
+"typeOfDevice": "Pico",
+"deviceDescription": "Pico Cell",
+"maxConnections": "3",
+"canConnect": "[Nano, Pico]"
+},
+{
+"id": 46,
+"name": "Pico9",
+"typeOfDevice": "Pico",
+"deviceDescription": "Pico Cell",
+"maxConnections": "3",
+"canConnect": "[Nano, Pico]"
+},
+{
+"id": 47,
+"name": "Femto0",
+"typeOfDevice": "Femto",
+"deviceDescription": "Femto Cell",
+"maxConnections": "1",
+"canConnect": "[Femto, Pico]"
+},
+{
+"id": 48,
+"name": "Femto1",
+"typeOfDevice": "Femto",
+"deviceDescription": "Femto Cell",
+"maxConnections": "1",
+"canConnect": "[Femto, Pico]"
+},
+{
+"id": 49,
+"name": "Femto2",
+"typeOfDevice": "Femto",
+"deviceDescription": "Femto Cell",
+"maxConnections": "1",
+"canConnect": "[Femto, Pico]"
+},
+{
+"id": 50,
+"name": "Femto3",
+"typeOfDevice": "Femto",
+"deviceDescription": "Femto Cell",
+"maxConnections": "1",
+"canConnect": "[Femto, Pico]"
+},
+{
+"id": 51,
+"name": "Femto4",
+"typeOfDevice": "Femto",
+"deviceDescription": "Femto Cell",
+"maxConnections": "1",
+"canConnect": "[Femto, Pico]"
+},
+{
+"id": 52,
+"name": "Femto5",
+"typeOfDevice": "Femto",
+"deviceDescription": "Femto Cell",
+"maxConnections": "1",
+"canConnect": "[Femto, Pico]"
+},
+{
+"id": 53,
+"name": "Femto6",
+"typeOfDevice": "Femto",
+"deviceDescription": "Femto Cell",
+"maxConnections": "1",
+"canConnect": "[Femto, Pico]"
+},
+{
+"id": 54,
+"name": "Femto7",
+"typeOfDevice": "Femto",
+"deviceDescription": "Femto Cell",
+"maxConnections": "1",
+"canConnect": "[Femto, Pico]"
+},
+{
+"id": 55,
+"name": "Femto8",
+"typeOfDevice": "Femto",
+"deviceDescription": "Femto Cell",
+"maxConnections": "1",
+"canConnect": "[Femto, Pico]"
+},
+{
+"id": 56,
+"name": "Femto9",
+"typeOfDevice": "Femto",
+"deviceDescription": "Femto Cell",
+"maxConnections": "1",
+"canConnect": "[Femto, Pico]"
+}
+],
+"edges": [
+{
+"source": 2,
+"target": 0,
+"bond": "1"
+},
+{
+"source": 2,
+"target": 1,
+"bond": "1"
+},
+{
+"source": 3,
+"target": 0,
+"bond": "1"
+},
+{
+"source": 3,
+"target": 1,
+"bond": "1"
+},
+{
+"source": 4,
+"target": 1,
+"bond": "1"
+},
+{
+"source": 4,
+"target": 0,
+"bond": "1"
+},
+{
+"source": 5,
+"target": 1,
+"bond": "1"
+},
+{
+"source": 5,
+"target": 0,
+"bond": "1"
+},
+{
+"source": 6,
+"target": 0,
+"bond": "1"
+},
+{
+"source": 6,
+"target": 1,
+"bond": "1"
+},
+{
+"source": 7,
+"target": 1,
+"bond": "1"
+},
+{
+"source": 7,
+"target": 0,
+"bond": "1"
+},
+{
+"source": 8,
+"target": 0,
+"bond": "1"
+},
+{
+"source": 8,
+"target": 1,
+"bond": "1"
+},
+{
+"source": 9,
+"target": 0,
+"bond": "1"
+},
+{
+"source": 9,
+"target": 1,
+"bond": "1"
+},
+{
+"source": 10,
+"target": 1,
+"bond": "1"
+},
+{
+"source": 10,
+"target": 0,
+"bond": "1"
+},
+{
+"source": 11,
+"target": 0,
+"bond": "1"
+},
+{
+"source": 11,
+"target": 1,
+"bond": "1"
+},
+{
+"source": 27,
+"target": 22,
+"bond": "1"
+},
+{
+"source": 27,
+"target": 15,
+"bond": "1"
+},
+{
+"source": 27,
+"target": 25,
+"bond": "1"
+},
+{
+"source": 28,
+"target": 3,
+"bond": "1"
+},
+{
+"source": 28,
+"target": 16,
+"bond": "1"
+},
+{
+"source": 28,
+"target": 14,
+"bond": "1"
+},
+{
+"source": 29,
+"target": 23,
+"bond": "1"
+},
+{
+"source": 29,
+"target": 9,
+"bond": "1"
+},
+{
+"source": 29,
+"target": 20,
+"bond": "1"
+},
+{
+"source": 30,
+"target": 3,
+"bond": "1"
+},
+{
+"source": 30,
+"target": 25,
+"bond": "1"
+},
+{
+"source": 30,
+"target": 16,
+"bond": "1"
+},
+{
+"source": 36,
+"target": 31,
+"bond": "1"
+},
+{
+"source": 36,
+"target": 34,
+"bond": "1"
+},
+{
+"source": 36,
+"target": 44,
+"bond": "1"
+},
+{
+"source": 37,
+"target": 42,
+"bond": "1"
+},
+{
+"source": 37,
+"target": 34,
+"bond": "1"
+},
+{
+"source": 37,
+"target": 44,
+"bond": "1"
+},
+{
+"source": 38,
+"target": 43,
+"bond": "1"
+},
+{
+"source": 38,
+"target": 41,
+"bond": "1"
+},
+{
+"source": 38,
+"target": 39,
+"bond": "1"
+},
+{
+"source": 39,
+"target": 42,
+"bond": "1"
+},
+{
+"source": 39,
+"target": 40,
+"bond": "1"
+},
+{
+"source": 39,
+"target": 45,
+"bond": "1"
+},
+{
+"source": 40,
+"target": 45,
+"bond": "1"
+},
+{
+"source": 40,
+"target": 31,
+"bond": "1"
+},
+{
+"source": 40,
+"target": 33,
+"bond": "1"
+},
+{
+"source": 41,
+"target": 33,
+"bond": "1"
+},
+{
+"source": 41,
+"target": 42,
+"bond": "1"
+},
+{
+"source": 41,
+"target": 43,
+"bond": "1"
+},
+{
+"source": 42,
+"target": 35,
+"bond": "1"
+},
+{
+"source": 42,
+"target": 45,
+"bond": "1"
+},
+{
+"source": 42,
+"target": 44,
+"bond": "1"
+},
+{
+"source": 43,
+"target": 35,
+"bond": "1"
+},
+{
+"source": 43,
+"target": 32,
+"bond": "1"
+},
+{
+"source": 43,
+"target": 32,
+"bond": "1"
+},
+{
+"source": 46,
+"target": 51,
+"bond": "1"
+},
+{
+"source": 47,
+"target": 54,
+"bond": "1"
+},
+{
+"source": 48,
+"target": 49,
+"bond": "1"
+},
+{
+"source": 49,
+"target": 52,
+"bond": "1"
+},
+{
+"source": 50,
+"target": 55,
+"bond": "1"
+},
+{
+"source": 51,
+"target": 53,
+"bond": "1"
+}
+]}

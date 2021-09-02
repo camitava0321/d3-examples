@@ -1,0 +1,11 @@
+ID,Name,Type,Probability
+1,A,Hub,0.23
+2,B,Node,0.1
+3,C,Leaf,0
+4,D,Hub,0.23
+5,E,Node,0.1
+6,F,Leaf,0
+7,G,Hub,0.23
+8,H,Node,0.1
+9,I,Leaf,0
+10,J,Leaf,0

@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta author="Amitava Chakraborty"/>
+<link rel="stylesheet" type="text/css" href="styles.css"/>
+<script src="../d3.js"></script>
+<title>D3 Cookbook - Basics 01</title>
+<style>
+svg {
+	margin: 1em;
+	padding: 10px;
+	border-radius: 5px;
+}
+</style>
+</head>
+
+<body>
+<h1>D3 Cookbook - Basics 01</h1>
+
+<br>
+<h2>Create HTML Elements</h2>
+<script>
+//How to create a HTML paragraph
+d3.select("body").append("p")
+	.text("This paragraph is added with D3");
+
+//The following creates a HTML paragraph, within that a ul, within that a li within the li another li and so on..
+d3.select("body").append("p").attr("id","amc")
+	.html("This paragraph is also added with D3 using an inner HTML")
+	.append("ul")
+	.append("li").html("list item 01")
+	.append("li").html("list item 02")
+	.append("li").html("list item 03")
+	;
+
+d3.select("#amc").append("ul").attr("id","amc-ul")	
+	.append("li").html("new list item 01")
+	;
+d3.select("#amc-ul")	
+	.append("li").html("new list item 02")
+	;
+d3.select("#amc-ul")	
+	.append("li").html("new list item 03")
+	;
+
+d3.select("body").append("h3").html("Add 5 Paragraphs");
+
+var data=[1,2,3,4,5];
+var colors=["pink","teal","indigo","purple","cyan"];
+d3.select("body").selectAll("ghost")		//No such class exist yet in the document
+	.data(data)								//Binds the data
+	.enter()								//inspect the data one by one - eqv to a for loop
+		.append("p").attr("class","ghost")	//create a class
+			.text(function(d){return "Ghost Paragraph "+d})		//one may use text or html method
+		;
+
+
+d3.select("body").append("h3").text("Drawing DIVs")
+d3.select("body").append("div").attr("id","canvas").style("border","1px dashed grey");
+d3.select("#canvas").selectAll("divbar")
+	.data(data)
+	.enter()
+	.append("div").attr("class","divbar")
+		.style("width", function(d){return d*50+"px";})
+		.style("height","20px")
+		//.style("display","inline-block")
+		.style("background-color", function(d){return colors[d-1];})
+		.style("margin-bottom","2px")
+		;
+
+</script>
+<p></p>
+
+
+<h2>Create SVG Elements</h2>
+<script>
+d3.select("body").append("h3")
+	.text("SVG: Just one shape");
+//Add an SVG Element
+var abc=d3.select("body").append("svg")
+	.attr("width","50")
+	.attr("height","50")
+	.attr("title","SVG Shape using D3")
+	.style("border","1px solid black")
+	.append("circle")
+		.attr("cx","25px")
+		.attr("cy","25px")
+		.attr("r","25px")
+		.style("fill","red")
+		.style("opacity",".5")
+		;
+d3.select("body").append("svg")
+	.attr("width","50")
+	.attr("height","50")
+	.attr("title","SVG Shape using D3")
+	.style("border","1px solid blue")
+	.append("ellipse")
+		.attr("cx","25px")
+		.attr("cy","25px")
+		.attr("rx","25px")
+		.attr("ry","10px")
+		.style("fill","blue")
+		.style("opacity",".5")
+		;
+		
+d3.select("body").append("h3")
+	.text("SVG: Elements based on data array");
+//Add SVG elements based on data
+var circleRadii = [1,1,2,3,5,8,13,21];
+var colors = ["#FFCCFF","#FFCCCC","#FFFFCC","#CCFFCC","#CCFFFF","#CCCCFF","#FF99FF","#FF99CC","#FF9999","#FFCC99",
+              "#FFFF99","#CCFF99","#99FF99","#99FFCC","#66FFFF","#66CCFF","#99CCFF","#CC99FF","#FF66FF","#FF9933","#66FF66","#0099FF"];
+d3.select("body").append("svg")
+			.attr("width","200")
+			.attr("height","200")
+			.style("border","1px dashed red")
+			.selectAll("circle")
+			.data(circleRadii)
+			.enter()
+			.append("circle")
+				.attr("cx", function(d){return d*5+"px";})
+				.attr("cy","40px")
+				.attr("r",function(d){return d;})
+				.style("fill",function(d) {return colors[d]});
+
+//Circles - illustrating SVG coordinate space
+circleRadii = [5,10,15,20,25,30,35];
+d3.select("body").append("svg")
+			.attr("width","400")
+			.attr("height","250")
+			.attr("title","SVG Coordinate space")
+			.style("border","1px dashed blue")
+			.selectAll("circle")
+			.data(circleRadii)
+			.enter()
+			.append("circle")
+				.attr("cx", function(d,i){return i*60;})
+				.attr("cy",function(d){return d*5;})
+				.attr("r",function(d){return d;})
+				.style("fill",function(d,i) {return colors[i]});
+
+
+
+//Circles - from JSON Data
+d3.select("body").append("h3")
+	.text("SVG: Elements based on JSON");
+var jsonCircles = [
+ { "x_axis": 100, "y_axis": 100, "radius": 60, "colorIndex" : 5, "strokeColor" : "red" },
+ { "x_axis": 100, "y_axis": 100, "radius": 40, "colorIndex" : 10,"strokeColor" : "green"},
+ { "x_axis": 100, "y_axis": 100, "radius": 20, "colorIndex" : 15,"strokeColor" : "blue"}];
+
+d3.select("body").append("svg")
+	.attr("width",200)
+	.attr("height",200)
+	.style("border","1px solid purple")
+	.selectAll("circle")
+		.data(jsonCircles)
+		.enter()
+		.append("circle")
+			.attr("cx", function(d){return d.x_axis;})
+			.attr("cy", function(d){return d.y_axis;})
+			.attr("r", function(d){return d.radius})
+			.style("fill", function(d){return colors[d.colorIndex];})
+			.style("stroke", function(d){return d.strokeColor;});
+		
+//SVG Path - D3.js includes a set of helper classes for generating SVG Path instructions.
+d3.select("body").append("h3")
+	.text("SVG: Variations of SVG Paths");
+//We create a SVG container
+var svgContainer = d3.select("body").append("svg")
+					.attr("width","200")
+					.attr("height","200")
+					.style("border","1px dashed grey");
+//For a line graph, we have a sequence of x,y coordinates. The sequence of the following x,y coordinates represents one line.
+var lineData = [ { "x": 2,   "y": 5},  { "x": 20,  "y": 20},
+                 { "x": 40,  "y": 10}, { "x": 60,  "y": 40},
+                 { "x": 80,  "y": 5},  { "x": 100, "y": 60}];
+
+//D3.js provides a function d3.svg.line() that converts the data into the SVG Path Mini-Language.
+//To convert our data to the SVG Path Commands, we need to tell the line Path Data Generator how to access the x and y coordinates from our data.
+//For this we need an accessor function to return the x,y coordinates from our data - for each x and y combination
+var lineFunction = d3.svg.line()
+					.x(function(d){return d.x;})
+					.y(function(d){return d.y;})
+					.interpolate("linear");
+console.log(lineFunction(lineData));
+//The result, an SVG Path, is then passed back to the SVG Path as the d attribute.	
+svgContainer.append("svg:path")
+	.attr("d",lineFunction(lineData))
+	.attr("stroke","blue")
+	.attr("stroke-width",2)
+	.attr("fill","none");
+svgContainer.append("svg:text")
+	.attr("x","2px")
+	.attr("y","190px")
+	.attr("font-family","sans-serif")
+	.attr("font-size","12px")
+	.text("LINEAR Interpolation");
+//For interpolation we had used only the default LINEAR(piecewise linear segments, as in a polyline). There are 10 more types illustrated as follows.
+//We will use the same data for all such interpolations. 
+//We can reuse the same SVG container variable and the lineFunction variable
+//For STEP-BEFORE (alternate between vertical and horizontal segments, as in a step function) Interpolation
+svgContainer = d3.select("body").append("svg")
+					.attr("width","200")
+					.attr("height","200")
+					.style("border","1px dashed grey");
+lineFunction = d3.svg.line()
+					.x(function(d){return d.x;})
+					.y(function(d){return d.y;})
+					.interpolate("step-before");
+svgContainer.append("svg:path")
+	.attr("d",lineFunction(lineData))
+	.attr("stroke","blue")
+	.attr("stroke-width",2)
+	.attr("fill","none");
+svgContainer.append("svg:text")
+	.attr("x","2px")
+	.attr("y","190px")
+	.attr("font-family","sans-serif")
+	.attr("font-size","12px")
+	.text("STEP-BEFORE Interpolation");
+//For STEP-AFTER (alternate between horizontal and vertical segments, as in a step function) Interpolation
+svgContainer = d3.select("body").append("svg")
+					.attr("width","200")
+					.attr("height","200")
+					.style("border","1px dashed grey");
+lineFunction = d3.svg.line()
+					.x(function(d){return d.x;})
+					.y(function(d){return d.y;})
+					.interpolate("step-after");
+svgContainer.append("svg:path")
+	.attr("d",lineFunction(lineData))
+	.attr("stroke","blue")
+	.attr("stroke-width",2)
+	.attr("fill","none");
+svgContainer.append("svg:text")
+	.attr("x","2px")
+	.attr("y","190px")
+	.attr("font-family","sans-serif")
+	.attr("font-size","12px")
+	.text("STEP-AFTER Interpolation");
+//For BASIS (a B-spline, with control point duplication on the ends)
+svgContainer = d3.select("body").append("svg")
+					.attr("width","200")
+					.attr("height","200")
+					.style("border","1px dashed grey");
+lineFunction = d3.svg.line()
+					.x(function(d){return d.x;})
+					.y(function(d){return d.y;})
+					.interpolate("basis");
+svgContainer.append("svg:path")
+	.attr("d",lineFunction(lineData))
+	.attr("stroke","blue")
+	.attr("stroke-width",2)
+	.attr("fill","none");
+svgContainer.append("svg:text")
+	.attr("x","2px")
+	.attr("y","190px")
+	.attr("font-family","sans-serif")
+	.attr("font-size","12px")
+	.text("BASIS(B-spline) Interpolation");
+
+//BASIS-OPEN (an open B-spline; may not intersect the start or end) Interpolation
+svgContainer = d3.select("body").append("svg")
+					.attr("width","200")
+					.attr("height","200")
+					.style("border","1px dashed grey");
+lineFunction = d3.svg.line()
+					.x(function(d){return d.x;})
+					.y(function(d){return d.y;})
+					.interpolate("basis-open");
+svgContainer.append("svg:path")
+	.attr("d",lineFunction(lineData))
+	.attr("stroke","blue")
+	.attr("stroke-width",2)
+	.attr("fill","none");
+svgContainer.append("svg:text")
+	.attr("x","2px")
+	.attr("y","190px")
+	.attr("font-family","sans-serif")
+	.attr("font-size","12px")
+	.text("BASIS-OPEN Interpolation");
+//BASIS-CLOSED (a closed B-spline, as in a loop) Interpolation
+svgContainer = d3.select("body").append("svg")
+					.attr("width","200")
+					.attr("height","200")
+					.style("border","1px dashed grey");
+lineFunction = d3.svg.line()
+					.x(function(d){return d.x;})
+					.y(function(d){return d.y;})
+					.interpolate("basis-closed");
+svgContainer.append("svg:path")
+	.attr("d",lineFunction(lineData))
+	.attr("stroke","blue")
+	.attr("stroke-width",2)
+	.attr("fill","none");
+svgContainer.append("svg:text")
+	.attr("x","2px")
+	.attr("y","190px")
+	.attr("font-family","sans-serif")
+	.attr("font-size","12px")
+	.text("BASIS-CLOSED Interpolation");
+//BUNDLE (equivalent to basis, except the tension parameter is used to straighten the spline) Interpolation
+d3.select("body").append("br");
+svgContainer = d3.select("body").append("svg")
+					.attr("width","200")
+					.attr("height","200")
+					.style("border","1px dashed grey");
+lineFunction = d3.svg.line()
+					.x(function(d){return d.x;})
+					.y(function(d){return d.y;})
+					.interpolate("bundle");
+svgContainer.append("svg:path")
+	.attr("d",lineFunction(lineData))
+	.attr("stroke","blue")
+	.attr("stroke-width",2)
+	.attr("fill","none");
+svgContainer.append("svg:text")
+	.attr("x","2px")
+	.attr("y","190px")
+	.attr("font-family","sans-serif")
+	.attr("font-size","12px")
+	.text("BUNDLE Interpolation");
+//CARDINAL (Cardinal spline, with control point duplication on the ends) Interpolation
+svgContainer = d3.select("body").append("svg")
+					.attr("width","200")
+					.attr("height","200")
+					.style("border","1px dashed grey");
+lineFunction = d3.svg.line()
+					.x(function(d){return d.x;})
+					.y(function(d){return d.y;})
+					.interpolate("cardinal");
+svgContainer.append("svg:path")
+	.attr("d",lineFunction(lineData))
+	.attr("stroke","blue")
+	.attr("stroke-width",2)
+	.attr("fill","none");
+svgContainer.append("svg:text")
+	.attr("x","2px")
+	.attr("y","190px")
+	.attr("font-family","sans-serif")
+	.attr("font-size","12px")
+	.text("CARDINAL Interpolation");
+//CARDINAL-OPEN (open Cardinal spline; may not intersect the start or end, but will intersect other control points) Interpolation
+svgContainer = d3.select("body").append("svg")
+					.attr("width","200")
+					.attr("height","200")
+					.style("border","1px dashed grey");
+lineFunction = d3.svg.line()
+					.x(function(d){return d.x;})
+					.y(function(d){return d.y;})
+					.interpolate("cardinal-open");
+svgContainer.append("svg:path")
+	.attr("d",lineFunction(lineData))
+	.attr("stroke","blue")
+	.attr("stroke-width",2)
+	.attr("fill","none");
+svgContainer.append("svg:text")
+	.attr("x","2px")
+	.attr("y","190px")
+	.attr("font-family","sans-serif")
+	.attr("font-size","12px")
+	.text("CARDINAL-OPEN Interpolation");
+//CARDINAL-CLOSED (closed Cardinal spline, as in a loop)
+svgContainer = d3.select("body").append("svg")
+					.attr("width","200")
+					.attr("height","200")
+					.style("border","1px dashed grey");
+lineFunction = d3.svg.line()
+					.x(function(d){return d.x;})
+					.y(function(d){return d.y;})
+					.interpolate("cardinal-closed");
+console.log(lineFunction(lineData));
+svgContainer.append("svg:path")
+	.attr("d",lineFunction(lineData))
+	.attr("stroke","blue")
+	.attr("stroke-width",2)
+	.attr("fill","none");
+svgContainer.append("svg:text")
+	.attr("x","2px")
+	.attr("y","190px")
+	.attr("font-family","sans-serif")
+	.attr("font-size","12px")
+	.text("CARDINAL-CLOSED Interpolation");
+//MONOTONE (cubic interpolation that preserves monotonicity in y)
+svgContainer = d3.select("body").append("svg")
+					.attr("width","200")
+					.attr("height","200")
+					.style("border","1px dashed grey");
+lineFunction = d3.svg.line()
+					.x(function(d){return d.x;})
+					.y(function(d){return d.y;})
+					.interpolate("monotone");
+svgContainer.append("svg:path")
+	.attr("d",lineFunction(lineData))
+	.attr("stroke","blue")
+	.attr("stroke-width",2)
+	.attr("fill","none");
+svgContainer.append("svg:text")
+	.attr("x","2px")
+	.attr("y","190px")
+	.attr("font-family","sans-serif")
+	.attr("font-size","12px")
+	.text("MONOTONE Interpolation");
+
+//Dynamic SVG Coordinate Space - Dynamically adjusting the viewport width/height based on the extent of data
+d3.select("body").append("h2")
+	.text("SVG: Dynamic SVG Coordinate Space - Dynamically adjusting the viewport width/height based on the extent of data");
+//Data points for the visualisation
+var jsonRectangles = [
+ { "x": 10, "y": 10, "height": 20, "width":20, "color" : "green" },
+ { "x": 40, "y": 40, "height": 20, "width":20, "color" : "purple" },
+ { "x": 70, "y": 70, "height": 20, "width":20, "color" : "red" }];
+
+var viewport_width=0 //Width needed for the viewport
+var viewport_height=0 //Height needed for the viewport
+//Determine the max width and height needed for the viewport
+for(var i=0; i<jsonRectangles.length; i++)
+{
+var temp_x, temp_y;
+//Farthest right point for this data
+temp_x=jsonRectangles[i].x + jsonRectangles[i].width;
+//Farthest bottom point for this data
+temp_y=jsonRectangles[i].y + jsonRectangles[i].height;
+
+if(temp_x>viewport_width)
+	{
+	viewport_width=temp_x;	
+	}
+if(temp_y>viewport_height)
+	{
+	viewport_height=temp_y;	
+	}
+}
+ 
+//We create a SVG container (The SVG Viewport)
+var svgContainer = d3.select("body").append("svg")
+					.attr("width",viewport_width+20)
+					.attr("height",viewport_height+20)
+					.style("border","1px dashed grey");
+
+var rectangles = svgContainer.selectAll("rect")
+					.data(jsonRectangles)
+					.enter()
+					.append("rect")
+					;
+var rectangleAttributes = rectangles
+							.attr("x",function(d){return d.x;})
+							.attr("y", function(d){return d.y;})
+							.attr("width", function(d){return d.width;})
+							.attr("height", function(d){return d.height;})
+							.style("fill", function(d){return d.color;})
+							
+//Dynamic SVG Coordinate Space - Dynamically adjusting the data (scaling) based on the standard viewport width/height
+d3.select("body").append("h2")
+	.text("SVG: Dynamic SVG Coordinate Space - Dynamically adjusting the data (scaling) based on the standard viewport width/height");
+
+//We create a SVG container (The SVG Viewport)
+var svgContainer = d3.select("body").append("svg")
+					.attr("width",200)
+					.attr("height",200)
+					.style("border","1px dashed grey");
+
+//Data points for the visualisation - see that the data points are far distributed to be diaplayed in 200,200 viewport
+var jsonRectangles = [
+ { "x": 210, "y": 10, "height": 20, "width":20, "color" : "green" },
+ { "x": 420, "y": 40, "height": 20, "width":20, "color" : "purple" },
+ { "x": 170, "y": 270, "height": 20, "width":20, "color" : "red" }];
+
+//Max datapoints for the domain-data 
+var max_width=0 
+var max_height=0
+//Determine the max datapoints for the domain-data 
+for(var i=0; i<jsonRectangles.length; i++)
+{
+var temp_x, temp_y;
+//Farthest right point for this data
+temp_x=jsonRectangles[i].x + jsonRectangles[i].width;
+//Farthest bottom point for this data
+temp_y=jsonRectangles[i].y + jsonRectangles[i].height;
+
+if(temp_x>max_width)
+	{
+	max_width=temp_x;	
+	}
+if(temp_y>max_height)
+	{
+	max_height=temp_y;	
+	}
+}
+//Create linear scales for the domain data
+var linearScaleX = d3.scale.linear()
+					.domain([0,max_width])
+					.range([0,200]);
+var linearScaleY = d3.scale.linear()
+					.domain([0,max_height])
+					.range([0,200]);
+					
+var rectangles = svgContainer.selectAll("rect")
+					.data(jsonRectangles)
+					.enter()
+					.append("rect")
+					;
+var rectangleAttributes = rectangles
+							.attr("x",function(d){return linearScaleX(d.x);})
+							.attr("y", function(d){return linearScaleY(d.y);})
+							.attr("width", function(d){return linearScaleX(d.width);})
+							.attr("height", function(d){return linearScaleY(d.height);})
+							.style("fill", function(d){return d.color;})
+							
+
+//Grouping SVG Components
+d3.select("body").append("h2")
+	.text("SVG: SVG Group(g) : Grouping of SVG Components");
+
+//We create a SVG container (The SVG Viewport)
+var svgContainer = d3.select("body").append("svg")
+					.attr("width",400)
+					.attr("height",400)
+					.style("border","1px dashed grey");
+
+//Data points for the visualisation
+var circleData = [
+   { "cx": 20, "cy": 20, "radius": 20, "color" : "green" },
+   { "cx": 70, "cy": 70, "radius": 20, "color" : "purple" }];
+ 
+var rectangleData = [
+   { "rx": 110, "ry": 110, "height": 30, "width": 30, "color" : "blue" },
+   { "rx": 160, "ry": 160, "height": 30, "width": 30, "color" : "red" }];
+
+//Add a group for all the circles   
+var circleGroup = svgContainer.append("g");
+//Add all the circles to this group instead of the svgContainer
+var circles = circleGroup.selectAll("circle")
+				.data(circleData)
+				.enter()
+				.append("circle")
+					.attr("cx", function(d){return d.cx;})
+					.attr("cy", function(d){return d.cy;})
+					.attr("r", function(d){return d.radius;})
+					.style("fill", function(d){return d.color;});
+					
+//Add a group for all the rectangles   
+var rectGroup = svgContainer.append("g");
+//Add all the rectangles to this group instead of the svgContainer
+var rectangles = rectGroup.selectAll("rect")
+				.data(rectangleData)
+				.enter()
+				.append("rect")
+					.attr("x", function(d){return d.rx;})
+					.attr("y", function(d){return d.ry;})
+					.attr("width", function(d){return d.width;})
+					.attr("height", function(d){return d.height;})
+					.style("fill", function(d){return d.color;});
+
+
+//Adding text to SVG Components
+d3.select("body").append("h2")
+	.text("SVG: Text : Adding text to SVG Components");
+
+//We create a SVG container (The SVG Viewport)
+var svgContainer = d3.select("body").append("svg")
+					.attr("width",200)
+					.attr("height",200)
+					.style("border","1px dashed grey");
+
+//Data points for the visualisation
+var dataPoints = [
+   { "cx": 20, "cy": 20, "radius": 20, "color" : 2 },
+   { "cx": 70, "cy": 20, "radius": 20, "color" : 4 },
+   { "cx": 120, "cy": 20, "radius": 20, "color" : 6 },
+   { "cx": 170, "cy": 20, "radius": 20, "color" : 8 },
+   { "cx": 20, "cy": 70, "radius": 20, "color" : 10 },
+   { "cx": 20, "cy": 120, "radius": 20, "color" : 12 }];
+
+//Add a group for all the circles   
+var circleGroup = svgContainer.append("g");
+//Add all the circles to this group instead of the svgContainer
+var circles = circleGroup.selectAll("circle")
+				.data(dataPoints)
+				.enter()
+				.append("circle")
+					.attr("cx", function(d){return d.cx;})
+					.attr("cy", function(d){return d.cy;})
+					.attr("r", function(d){return d.radius;})
+					.style("fill", function(d){return colors[d.color];});
+
+//Add the text components - use the identical data points
+var texts = circleGroup.selectAll("text")
+				.data(dataPoints)
+				.enter()
+				.append("text");
+//Add labels to each text components
+var textLabels = texts
+					.attr("x", function(d){return d.cx;})
+					.attr("y", function(d){return d.cy;})
+					.attr("font-family", "sand-serif")
+					.attr("font-size","8px")
+					.style("fill","blue")
+					.text(function(d){return "("+d.cx+","+d.cy+")";});
+
+
+//Transformation of SVG Components
+d3.select("body").append("h2")
+	.text("SVG: Transformation : Transformation of SVG Components");
+
+//We create a SVG container (The SVG Viewport)
+var svgContainer = d3.select("body").append("svg")
+					.attr("width",400)
+					.attr("height",400)
+					.style("border","1px dashed grey");
+
+//The previous circleData and rectangleData is being used as the Data points for the visualisation
+//Add a group for all the circles & add a linear transformation to the group from 0,0 -> 75,10
+//In effect it translates the entire coordinate space of all the circles added to this group 
+var circleGroup = svgContainer.append("g")
+					.attr("transform", "translate(75,10)");
+
+//Add all the circles to this group instead of the svgContainer
+var circles = circleGroup.selectAll("circle")
+				.data(circleData)
+				.enter()
+				.append("circle")
+					.attr("cx", function(d){return d.cx;})
+					.attr("cy", function(d){return d.cy;})
+					.attr("r", function(d){return d.radius;})
+					.style("fill", function(d){return d.color;});
+					
+//Add a group for all the rectangles   
+var rectGroup = svgContainer.append("g");
+//Add all the rectangles to this group instead of the svgContainer
+var rectangles = rectGroup.selectAll("rect")
+				.data(rectangleData)
+				.enter()
+				.append("rect")
+					.attr("x", function(d){return d.rx;})
+					.attr("y", function(d){return d.ry;})
+					.attr("width", function(d){return d.width;})
+					.attr("height", function(d){return d.height;})
+					.style("fill", function(d){return d.color;});
+
+
+
+   
+</script>	
+</body>
+</html>
