@@ -1,0 +1,31 @@
+{
+  "nodes": [
+    {"atom": "S", "size": 12, "color": 0, "text": ""},
+    {"atom": "Ch", "size": 15, "color": 1, "text": "CHUNK"},
+    {"atom": "NNP", "size": 10, "color": 2, "text": "Address"},
+    {"atom": "NNP", "size": 10, "color": 2, "text": "Before"},
+    {"atom": "DT", "size": 10, "color": 3, "text": "The"},
+    {"atom": "Ch", "size": 15, "color": 1, "text": "CHUNK"},
+    {"atom": "NNP", "size": 10, "color": 2, "text": "Address1"},
+    {"atom": "NNP", "size": 10, "color": 2, "text": "Before1"},
+    {"atom": "Ch", "size": 15, "color": 1, "text": "CHUNK"},
+    {"atom": "NNP", "size": 10, "color": 2, "text": "Address2"},
+    {"atom": "NNP", "size": 10, "color": 2, "text": "Before2"},
+    {"atom": "NNP", "size": 10, "color": 2, "text": "Address3"},
+    {"atom": "PRP", "size": 10, "color": 4, "text": "you"}
+  ],
+  "links": [
+    {"source": 0, "target": 1,  "bond": 2},
+    {"source": 0, "target": 4,  "bond": 1},
+    {"source": 0, "target": 5,  "bond": 2},
+    {"source": 0, "target": 8,  "bond": 2},
+    {"source": 0, "target": 12,  "bond": 1},
+    {"source": 1, "target": 2,  "bond": 1},
+    {"source": 1, "target": 3, "bond": 1},
+    {"source": 5, "target": 6, "bond": 1},
+    {"source": 5, "target": 7,  "bond": 1},
+    {"source": 8, "target": 9,  "bond": 1},
+    {"source": 8, "target": 10,  "bond": 1},
+    {"source": 8, "target": 11, "bond": 1}
+  ]
+}

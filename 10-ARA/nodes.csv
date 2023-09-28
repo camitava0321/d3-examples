@@ -1,0 +1,31 @@
+id,name,type,description,module
+0,AraApplication,Start,AraApplication,
+1,AraRouter,Platform Service,router,
+2,AraHandler,Platform Service,handler,
+3,AraEnricher,Platform Service,enricher,
+4,AraValidator,Platform Service,AraValidator,
+5,ARARequestPayloadValidator,ARA-Validator,ARARequestPayloadValidator,
+6,ARAInvocationTypeEnumValidator,ARA-Validator,ARAInvocationTypeEnumValidator,
+7,ARAInvocationTypeValidationAnnotation,ARA-Validator,ARAInvocationTypeValidationAnnotation,
+8,AraService,Platform Service,service,
+9,ARAEngine,Engine-Core,ARAEngine,
+10,DataGenerator,Engine-Core,generator,generator
+11,MODELS,Engine-Core,model,
+12,RoomAssignmentPublisher,Engine-Core,report,
+13,RoomAssignmentSummaryPublisher,Engine-Core,util,
+14,ApplicationConfiguration,Engine-Core,config,config
+15,ARAConfigServiceJSONImpl,Engine-Core,Orchestrator,config
+16,ARAData,Engine-Core,Text Annotator,data
+17,ARADataManager,Engine-Core,Speech To User,data
+18,DataFilter,Engine-Core,Text Related Services,dataselector
+19,DataFilterChain,Engine-Core,Image Related Services,dataselector
+20,DataFilterChainImpl,Engine-Core,Training Macro Service,dataselector
+21,DataFilterManager,Engine-Core,Generic Conversation/Bot Service,dataselector
+22,DataSelector,Engine-Core,Generic Data Ingestion and NLSearch Service,dataselector
+23,DataSelectorJSONImpl,Engine-Core,Generic Language Trnslator,dataselector
+24,ARABusinessValidationException,Exception,Generic Natural Language Classifier,exception
+25,ARAPrintException,Exception,Generic Named Entity Recognition,exception
+26,ARARoomAssignmentException,Exception,Generic Keyword Extractor,exception
+27,AraConfigIntegrator,Platform Service,Generic Sentiment Extractor,integrator
+28,ARAConfigRestClient,Platform Service,Generic Personality Insights,integrator
+29,ARAUtils,Engine-Core,Generic Speech To Text,util

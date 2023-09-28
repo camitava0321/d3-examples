@@ -1,0 +1,6 @@
+id,typeName,cluster,color
+0,Start,1,#ffffff
+1,Platform Service,3,#33cc33
+2,Engine-Core,6,#3399ff
+3,Exception,4,#ffe085
+4,ARA-Validator,5,#ffaaaa

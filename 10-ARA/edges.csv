@@ -1,0 +1,35 @@
+sourceid,relationid,reltype
+0,1,use
+1,2,use
+2,8,use
+2,27,use
+2,14,use
+2,24,use
+6,7,use
+7,6,use
+8,27,use
+8,14,use
+8,26,use
+8,24,use
+8,9,use
+9,8,use
+9,14,use
+9,29,use
+9,13,use
+9,12,use
+27,28,use
+15,16,use
+15,17,use
+15,19,use
+15,20,use
+15,22,use
+15,25,use
+16,19,use
+16,20,use
+16,24,use
+16,25,use
+17,10,annotate text
+18,12,return speech to user
+19,26,use
+19,28,use
+23,15,use
