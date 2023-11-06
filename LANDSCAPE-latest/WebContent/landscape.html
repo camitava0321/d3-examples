@@ -5,7 +5,7 @@
 <meta name="last-modified" content="05/02/2016">
 <link rel="stylesheet" type="text/css" href="css/landscapeStyles.css">
 <link rel="stylesheet" href="css/lib/bootstrap.min.css">
-<script src="js/lib/d3.min.js"></script>
+<script src="js/lib/d3.js"></script>
 <script src="js/lib/jquery.js" type="text/javascript"></script>
 <script src="js/landscapeFunctions.js" type="text/javascript"></script>
 <script src="js/lib/bootstrap.min.js"></script>
@@ -101,7 +101,38 @@ var interactionJson = (function () {
 })(); 
 graph.applications = applicationJson.applications;
 graph.interactions = interactionJson.interactions;
+console.log (applicationJson);
+console.log (interactionJson);
 
+var verifiedData=true;
+//Verify the link source and target are all valid applications
+for (i = 0; i < interactionJson.interactions.length; i++) {
+	var sourceOK=false;
+	var targetOK=false;
+    var interaction1 = interactionJson.interactions[i];
+	let source1 = parseInt(interaction1.source);
+	let target1 = parseInt(interaction1.target);
+	for (j = 0; j < applicationJson.applications.length; j++) {
+		var applicationID = parseInt(applicationJson.applications[j].id);
+		if (applicationID==source1) {
+			sourceOK=true;
+		}
+		if (applicationID==target1) {
+			targetOK=true;
+		}
+	};
+	if (!sourceOK || !targetOK) {
+		console.log ("Invalid  interaction: "+i+
+			" : "+interaction1.informationDomain+" source: "+interaction1.source.id+
+			" target: "+interaction1.target.id);
+		verifiedData=false;
+	};
+	
+};
+
+if (!verifiedData) {
+	console.log("Applications and Interactions Data is Incorrect");
+}
 	//Set the Initial position of the nodes  
 	var len = graph.applications.length;
 
@@ -455,9 +486,9 @@ style="position: absolute; top: 380px; left: 0px; width: 70px; height: 100px; ">
 <div id="status" class="status">
 
 </div>
-<!-- <div class="maersk">
+<div class="maersk">
 <img src="resources/images/Maersk_logo.png" width=70 height=63/>
-</div> -->
+</div>
 
 </body>
 </script>
