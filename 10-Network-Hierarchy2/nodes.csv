@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 id,name,type,description
 0,Booking Clerk,Role,
 1,Customer,Entity,
@@ -22,3 +23,21 @@ id,name,type,description
 20,rate,Attribute,
 21,booking-amount,Attribute,
 22,amenities,Attribute,
+=======
+id,name,guest,description,type
+0,res001,b2b,16/12/2024-18/12/2024-KING,A
+1,res002,b2b,19/12/2024-21/12/2024-KING,A
+2,res003,b2b,22/12/2024-24/12/2024-KING,A
+3,res004,share,16/12/2024-18/12/2024-KING,B
+4,res005,share,19/12/2024-21/12/2024-KING,C
+5,res006,travel,22/12/2024-24/12/2024-QNQN,D
+6,res007,travel,19/12/2024-24/12/2024-QNQN,E
+7,res008,b2b,20/12/2024-24/12/2024-KING,C
+8,res009,b2b,25/12/2024-02/01/2025-KING,B
+9,res010,b2b,21/12/2024-24/12/2024-KING,B
+10,res011,share,19/12/2024-20/12/2024-KING,B
+11,res012,b2b,25/12/2024-28/12/2024-QNQN,E
+12,res013,b2b,29/12/2024-31/12/2024-QNQN,E
+13,res014,b2b,25/12/2024-02/01/2025-KING,A
+14,res015,travel,16/12/2024-20/12/2024-SDLC,F
+>>>>>>> Stashed changes

@@ -1,4 +1,5 @@
 sourceid,relationid,reltype
+<<<<<<< Updated upstream
 0,1,father
 0,2,father
 0,7,father
@@ -22,3 +23,25 @@ sourceid,relationid,reltype
 6,21,father
 6,22,father
 22,10,father
+=======
+0,1,b2b
+0,2,b2b
+0,3,share
+1,4,share
+1,6,travel
+2,5,travel
+4,6,travel
+7,6,travel
+3,8,b2b
+3,9,b2b
+1,10,share
+6,11,b2b
+6,12,b2b
+2,11,travel
+0,13,b2b
+3,10,b2b
+0,14,travel
+14,6,travel
+9,2,share
+8,11,travel
+>>>>>>> Stashed changes

@@ -82,7 +82,7 @@ d3.csv('nodes.csv', function(data) {
 
 
     for (var k = 0, n = data.length; k < n; k += 1) {
-        nodes.push({name: data[k].name, type: data[k].type, id: parseInt(data[k].id)});
+        nodes.push({name: data[k].name, guest: data[k].guest, type: data[k].type, desc: data[k].description, id: parseInt(data[k].id)});
     };
 });
 	
@@ -113,7 +113,7 @@ svg.append("svg:defs").selectAll("marker")
     .attr("orient", "auto")
   .append("svg:path")
     .attr("d", "M0,-5 L10,0 L0,5 L3,0 L0,-5")
-	.style("fill","#999999");
+	.style("fill","#777777");
 	
 
 link = svg.append("svg:g").selectAll(".link")
@@ -184,7 +184,8 @@ node = svg.selectAll(".node")
 	//Add tooltip text to each node
 	node.append("title")
 		.style("fill", "#ffdddd")
-		  .text(function(d,event) { return d.id+": "+d.type+":"+d.name+"("+d.x.toFixed(1)+","+d.y.toFixed(1)+")"+"("+d.weight+")"; });
+		  .text(function(d,event) { return d.id+": "+d.guest+": "+d.type+":"+d.name+"("
+      +d.desc+")"+"("+d.weight+")"; });
 
 	  
 
